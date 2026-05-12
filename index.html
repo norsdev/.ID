@@ -1,1383 +1,2426 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NORSDEV.ID — Create. Build. Innovate.</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sheva Jaya Motor | Bengkel Mobil Modern Kutoarjo</title>
+    <meta name="description" content="Sheva Jaya Motor adalah bengkel mobil umum modern dan terpercaya di Kutoarjo, Purworejo. Booking servis mobil, tune up, ganti oli, servis AC, kaki-kaki, spooring, body repair, scanning, dan detailing.">
+    <meta name="keywords" content="Sheva Jaya Motor, bengkel mobil Kutoarjo, bengkel mobil Purworejo, servis mobil Kutoarjo, tune up, ganti oli, servis AC, spooring balancing">
+    <meta name="theme-color" content="#111111">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #080808;
+            --coal: #111111;
+            --steel: #1b1f24;
+            --panel: rgba(24, 25, 27, 0.78);
+            --panel-solid: #18191b;
+            --line: rgba(255, 255, 255, 0.11);
+            --line-strong: rgba(255, 255, 255, 0.2);
+            --text: #f5f5f3;
+            --muted: #b5b8bd;
+            --soft: #e9edf1;
+            --red: #e31925;
+            --red-dark: #9d1119;
+            --red-glow: rgba(227, 25, 37, 0.42);
+            --amber: #f5b041;
+            --green: #27c98b;
+            --shadow: 0 20px 54px rgba(0, 0, 0, 0.32);
+            --radius: 8px;
+            --max: 1200px;
+        }
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  <!-- React + Preact compat -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        html {
+            scroll-behavior: smooth;
+        }
 
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+        body {
+            font-family: "Barlow", sans-serif;
+            color: var(--text);
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(180deg, var(--black) 0%, #101114 42%, #0b0b0c 100%);
+            background-size: 72px 72px, auto;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-  <!-- Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        body.loading {
+            overflow: hidden;
+        }
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-    :root {
-      --cyan: #00f0ff;
-      --blue: #0044ff;
-      --purple: #7b2fff;
-      --dark: #020408;
-      --dark2: #050a14;
-      --glass: rgba(255,255,255,0.04);
-      --glass2: rgba(255,255,255,0.025);
-      --border: rgba(0,240,255,0.1);
-      --text: #e8e8e8;
-      --text-dim: rgba(255,255,255,0.45);
-      --discord: #5865f2;
-      --wa: #25d366;
-    }
+        img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            object-fit: cover;
+        }
 
-    html { scroll-behavior: smooth; }
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
 
-    body {
-      background: var(--dark);
-      color: var(--text);
-      font-family: 'Space Grotesk', sans-serif;
-      overflow-x: hidden;
-      cursor: default;
-    }
+        .container {
+            width: min(var(--max), calc(100% - 32px));
+            margin: 0 auto;
+        }
 
-    /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--dark); }
-    ::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.2); border-radius: 4px; }
+        .loader {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: grid;
+            place-items: center;
+            background: #050505;
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+        }
 
-    /* ─── LAYERS ───────────────────────────────────────── */
-    #bg-canvas  { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-    .grid-layer { position: fixed; inset: 0; z-index: 1; pointer-events: none;
-      background-image: linear-gradient(rgba(0,240,255,0.018) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0,240,255,0.018) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 20%, transparent 70%);
-    }
-    .vignette   { position: fixed; inset: 0; z-index: 2; pointer-events: none;
-      background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 25%, rgba(2,4,8,0.9) 100%);
-    }
-    .scanline   { position: fixed; left: 0; width: 100%; height: 1px; z-index: 3;
-      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.06), transparent);
-      pointer-events: none; animation: scanMove 9s linear infinite;
-    }
-    @keyframes scanMove { 0% { top: -1px; } 100% { top: 100%; } }
+        .loader.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
 
-    /* ─── APP ROOT ────────────────────────────────────── */
-    #root { position: relative; z-index: 5; }
+        .loader-box {
+            width: min(280px, 78vw);
+            text-align: center;
+        }
 
-    /* ─── GLASS CARD ──────────────────────────────────── */
-    .glass {
-      background: var(--glass);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .glass::before {
-      content: ''; position: absolute; inset: -1px;
-      background: linear-gradient(135deg, rgba(0,240,255,0.07) 0%, transparent 45%, rgba(123,47,255,0.06) 100%);
-      border-radius: 20px; pointer-events: none; z-index: -1;
-    }
-    .glass::after {
-      content: ''; position: absolute; top: -1px; left: 12%; right: 12%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.5), transparent);
-      border-radius: 20px 20px 0 0;
-    }
+        .loader-mark {
+            width: 68px;
+            height: 68px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 18px;
+            border: 2px solid var(--line-strong);
+            border-top-color: var(--red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
 
-    /* ─── GLOW BUTTONS ─────────────────────────────────── */
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      font-family: 'Rajdhani', sans-serif; font-size: 0.82rem; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      padding: 0.85rem 2.2rem; border-radius: 60px;
-      border: none; cursor: pointer; text-decoration: none;
-      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-      position: relative; overflow: hidden;
-    }
-    .btn-primary.cyan {
-      background: linear-gradient(135deg, var(--cyan), #0088ff);
-      color: var(--dark); box-shadow: 0 0 20px rgba(0,240,255,0.3);
-    }
-    .btn-primary.cyan:hover {
-      transform: translateY(-3px) scale(1.04);
-      box-shadow: 0 0 40px rgba(0,240,255,0.45), 0 0 80px rgba(0,68,255,0.2);
-    }
-    .btn-primary.glass-btn {
-      background: rgba(0,240,255,0.06);
-      color: var(--cyan);
-      border: 1px solid rgba(0,240,255,0.2);
-      backdrop-filter: blur(10px);
-    }
-    .btn-primary.glass-btn:hover {
-      background: rgba(0,240,255,0.12);
-      border-color: rgba(0,240,255,0.4);
-      transform: translateY(-3px);
-      box-shadow: 0 0 25px rgba(0,240,255,0.2);
-    }
-    .btn-primary.discord-btn {
-      background: rgba(88,101,242,0.1); color: var(--discord);
-      border: 1px solid rgba(88,101,242,0.3);
-    }
-    .btn-primary.discord-btn:hover {
-      background: rgba(88,101,242,0.2);
-      border-color: rgba(88,101,242,0.6);
-      transform: translateY(-3px);
-      box-shadow: 0 0 30px rgba(88,101,242,0.3);
-    }
-    .btn-primary.wa-btn {
-      background: rgba(37,211,102,0.1); color: var(--wa);
-      border: 1px solid rgba(37,211,102,0.3);
-    }
-    .btn-primary.wa-btn:hover {
-      background: rgba(37,211,102,0.2);
-      border-color: rgba(37,211,102,0.6);
-      transform: translateY(-3px);
-      box-shadow: 0 0 30px rgba(37,211,102,0.3);
-    }
+        .loader-box strong {
+            display: block;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
-    /* ─── SECTION BASE ──────────────────────────────────── */
-    .section { min-height: 100vh; padding: 5rem 2rem; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .loader-bar {
+            height: 4px;
+            margin-top: 16px;
+            background: #242424;
+            overflow: hidden;
+            border-radius: 99px;
+        }
 
-    /* ─── SECTION LABEL ─────────────────────────────────── */
-    .section-label {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.7rem; letter-spacing: 0.5em;
-      text-transform: uppercase; color: var(--cyan); opacity: 0.5;
-      margin-bottom: 0.5rem; text-align: center;
-    }
+        .loader-bar span {
+            display: block;
+            height: 100%;
+            width: 70%;
+            background: linear-gradient(90deg, var(--red), var(--amber));
+            animation: load 1.4s ease-in-out infinite;
+        }
 
-    /* ─── SECTION HEADING ───────────────────────────────── */
-    .section-heading {
-      font-family: 'Orbitron', monospace; font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-      text-align: center; line-height: 1.15; margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #fff 0%, var(--cyan) 60%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8, 8, 8, 0.82);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
 
-    .section-desc {
-      font-family: 'Rajdhani', sans-serif; font-size: 1rem;
-      color: var(--text-dim); text-align: center; max-width: 580px;
-      line-height: 1.6; letter-spacing: 0.02em;
-    }
+        .topline {
+            display: none;
+            border-bottom: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
 
-    /* ─── DIVIDER LINE ──────────────────────────────────── */
-    .divider {
-      width: 60px; height: 2px;
-      background: linear-gradient(90deg, var(--cyan), var(--purple));
-      border-radius: 2px; margin: 1rem auto;
-      box-shadow: 0 0 10px rgba(0,240,255,0.4);
-    }
+        .topline-inner {
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
 
-    /* ─── GLOW ORB ──────────────────────────────────────── */
-    .orb {
-      position: absolute; border-radius: 50%; pointer-events: none;
-      filter: blur(50px);
-    }
+        .topline a,
+        .topline span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    /* ─── CORNER DECOS ──────────────────────────────────── */
-    .corner { position: fixed; z-index: 6; width: 36px; height: 36px; opacity: 0.2; }
-    .corner-tl { top: 0.8rem; left: 0.8rem; border-top: 1px solid var(--cyan); border-left: 1px solid var(--cyan); }
-    .corner-tr { top: 0.8rem; right: 0.8rem; border-top: 1px solid var(--cyan); border-right: 1px solid var(--cyan); }
-    .corner-bl { bottom: 0.8rem; left: 0.8rem; border-bottom: 1px solid var(--cyan); border-left: 1px solid var(--cyan); }
-    .corner-br { bottom: 0.8rem; right: 0.8rem; border-bottom: 1px solid var(--cyan); border-right: 1px solid var(--cyan); }
+        .nav {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
 
-    /* ─── LOADING ───────────────────────────────────────── */
-    #loading-screen {
-      position: fixed; inset: 0; z-index: 9999;
-      background: var(--dark);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      transition: opacity 0.8s, visibility 0.8s;
-    }
-    #loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .loader-ring {
-      width: 60px; height: 60px; border-radius: 50%;
-      border: 2px solid rgba(0,240,255,0.08);
-      border-top-color: var(--cyan);
-      animation: spin 1s linear infinite;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 0 24px rgba(0,240,255,0.25);
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loader-text {
-      font-family: 'Orbitron', monospace; font-size: 0.65rem;
-      letter-spacing: 0.6em; color: var(--cyan); opacity: 0.5;
-    }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
 
-    /* ─── NAV ───────────────────────────────────────────── */
-    .nav-bar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.2rem 2.5rem;
-      background: rgba(2,4,8,0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0,240,255,0.06);
-      transition: all 0.3s;
-    }
-    .nav-logo {
-      font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 900;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      background: linear-gradient(135deg, var(--cyan), #7b2fff);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .nav-links { display: flex; gap: 2rem; align-items: center; }
-    .nav-link {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.78rem; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim);
-      text-decoration: none; transition: color 0.3s; cursor: pointer;
-    }
-    .nav-link:hover { color: var(--cyan); }
-    .nav-cta { display: flex; gap: 0.6rem; }
+        .brand-mark {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            border: 1px solid rgba(227, 25, 37, 0.38);
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            box-shadow: 0 0 26px rgba(227, 25, 37, 0.22);
+            border-radius: var(--radius);
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
 
-    /* ─── HERO ──────────────────────────────────────────── */
-    #hero { min-height: 100vh; position: relative; overflow: hidden; }
-    .hero-inner {
-      position: relative; z-index: 2;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 100vh; padding: 6rem 2rem 4rem; text-align: center;
-    }
-    .hero-glow-center {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 900px; height: 900px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,240,255,0.06) 0%, transparent 65%);
-      filter: blur(80px); pointer-events: none;
-    }
-    .hero-glow-purple {
-      position: absolute; top: -100px; right: -150px;
-      width: 600px; height: 600px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(123,47,255,0.07) 0%, transparent 65%);
-      filter: blur(80px); pointer-events: none;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem;
-      letter-spacing: 0.35em; text-transform: uppercase;
-      color: var(--cyan); opacity: 0.7;
-      padding: 0.4rem 1.2rem; border-radius: 30px;
-      background: rgba(0,240,255,0.06);
-      border: 1px solid rgba(0,240,255,0.15);
-      margin-bottom: 1.5rem;
-    }
-    .hero-title {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(3.5rem, 10vw, 9rem);
-      font-weight: 900; letter-spacing: 0.05em;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, #fff 0%, var(--cyan) 30%, var(--purple) 70%, #fff 100%);
-      background-size: 300% 300%;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      animation: gradientShift 5s ease infinite;
-      line-height: 0.95;
-      filter: drop-shadow(0 0 60px rgba(0,240,255,0.15));
-      margin-bottom: 1rem;
-    }
-    @keyframes gradientShift {
-      0%,100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-    .hero-subtitle {
-      font-family: 'Rajdhani', sans-serif;
-      font-size: clamp(1rem, 2.5vw, 1.6rem);
-      font-weight: 400; letter-spacing: 0.5em; text-transform: uppercase;
-      color: rgba(0,240,255,0.7); margin-bottom: 1.5rem;
-    }
-    .hero-statement {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-      color: var(--text-dim); max-width: 520px;
-      line-height: 1.7; margin-bottom: 2.5rem;
-    }
-    .hero-tags {
-      display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center;
-      margin-bottom: 2.5rem;
-    }
-    .hero-tag {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem;
-      letter-spacing: 0.15em; padding: 0.35rem 1rem;
-      border-radius: 30px;
-      background: rgba(0,240,255,0.05);
-      border: 1px solid rgba(0,240,255,0.1);
-      color: rgba(0,240,255,0.5);
-    }
-    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-    .scroll-indicator {
-      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-      opacity: 0.3; animation: scrollBounce 2s ease-in-out infinite;
-    }
-    .scroll-indicator span { font-family: 'Rajdhani', sans-serif; font-size: 0.6rem; letter-spacing: 0.4em; color: var(--cyan); text-transform: uppercase; }
-    .scroll-line { width: 1px; height: 30px; background: linear-gradient(180deg, var(--cyan), transparent); }
-    @keyframes scrollBounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+        .brand-copy {
+            display: grid;
+            gap: 1px;
+            min-width: 0;
+        }
 
-    /* ─── SERVICE CARDS ─────────────────────────────────── */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem; max-width: 1100px; width: 100%;
-    }
-    .service-card {
-      border-radius: 20px; padding: 2rem;
-      background: var(--glass2);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      position: relative; overflow: hidden;
-      transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
-      cursor: default;
-    }
-    .service-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(0,240,255,0.05) 0%, transparent 50%);
-      opacity: 0; transition: opacity 0.5s;
-    }
-    .service-card:hover::before { opacity: 1; }
-    .service-card:hover {
-      border-color: rgba(0,240,255,0.25);
-      transform: translateY(-8px);
-      box-shadow: 0 20px 60px rgba(0,240,255,0.08), 0 0 40px rgba(0,240,255,0.04);
-    }
-    .service-icon {
-      width: 56px; height: 56px; border-radius: 14px;
-      background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(123,47,255,0.1));
-      border: 1px solid rgba(0,240,255,0.15);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.2rem; font-size: 1.4rem;
-      transition: all 0.4s;
-    }
-    .service-card:hover .service-icon {
-      box-shadow: 0 0 25px rgba(0,240,255,0.2);
-      border-color: rgba(0,240,255,0.3);
-    }
-    .service-card h3 {
-      font-family: 'Orbitron', monospace; font-size: 0.9rem; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: #fff; margin-bottom: 0.6rem;
-    }
-    .service-card p {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.9rem;
-      color: var(--text-dim); line-height: 1.5;
-    }
-    .service-glow { position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; border-radius: 50%; filter: blur(30px); pointer-events: none; opacity: 0.5; transition: opacity 0.5s; }
-    .service-card:hover .service-glow { opacity: 1; }
+        .brand-copy strong {
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.15rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
 
-    /* ─── MAP SHOWCASE ──────────────────────────────────── */
-    .filter-tabs {
-      display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center;
-      margin-bottom: 2.5rem;
-    }
-    .filter-tab {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.75rem; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      padding: 0.5rem 1.2rem; border-radius: 30px;
-      background: transparent; border: 1px solid rgba(0,240,255,0.12);
-      color: var(--text-dim); cursor: pointer; transition: all 0.3s;
-    }
-    .filter-tab:hover, .filter-tab.active {
-      background: rgba(0,240,255,0.08);
-      border-color: rgba(0,240,255,0.35);
-      color: var(--cyan);
-    }
-    .filter-tab.active { box-shadow: 0 0 15px rgba(0,240,255,0.15); }
+        .brand-copy span {
+            color: var(--muted);
+            font-size: 0.82rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-    .maps-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.5rem; max-width: 1200px; width: 100%;
-    }
-    .map-card {
-      border-radius: 18px; overflow: hidden;
-      background: var(--glass2); border: 1px solid var(--border);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
-      position: relative;
-    }
-    .map-card:hover {
-      border-color: rgba(0,240,255,0.25);
-      transform: translateY(-6px);
-      box-shadow: 0 20px 60px rgba(0,240,255,0.1);
-    }
-    .map-thumb {
-      width: 100%; height: 200px; position: relative; overflow: hidden;
-    }
-    .map-thumb img, .map-thumb .thumb-placeholder {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform 0.6s;
-    }
-    .map-card:hover .map-thumb img,
-    .map-card:hover .thumb-placeholder { transform: scale(1.06); }
-    .thumb-placeholder {
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Orbitron', monospace; font-size: 2.5rem; font-weight: 900;
-      background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(123,47,255,0.15));
-      color: rgba(0,240,255,0.2);
-    }
-    .map-thumb-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, transparent 30%, rgba(2,4,8,0.8) 100%);
-    }
-    .map-tags {
-      position: absolute; top: 0.8rem; left: 0.8rem;
-      display: flex; gap: 0.4rem; flex-wrap: wrap;
-    }
-    .map-tag {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.62rem;
-      letter-spacing: 0.12em; padding: 0.2rem 0.6rem;
-      border-radius: 20px;
-      background: rgba(0,240,255,0.15); color: var(--cyan);
-      border: 1px solid rgba(0,240,255,0.2);
-    }
-    .map-tag.purple { background: rgba(123,47,255,0.15); color: #a87fff; border-color: rgba(123,47,255,0.2); }
-    .map-tag.green  { background: rgba(37,211,102,0.12); color: var(--wa); border-color: rgba(37,211,102,0.2); }
-    .map-body { padding: 1.2rem 1.4rem; }
-    .map-body h3 { font-family: 'Orbitron', monospace; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; margin-bottom: 0.4rem; }
-    .map-body p { font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; color: var(--text-dim); line-height: 1.4; margin-bottom: 1rem; }
-    .map-actions { display: flex; gap: 0.6rem; }
-    .map-btn {
-      font-family: 'Rajdhani', sans-serif; font-size: 0.7rem; font-weight: 700;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      padding: 0.45rem 1rem; border-radius: 8px;
-      border: 1px solid; cursor: pointer;
-      transition: all 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
-    }
-    .map-btn.primary { background: rgba(0,240,255,0.1); border-color: rgba(0,240,255,0.3); color: var(--cyan); }
-    .map-btn.primary:hover { background: rgba(0,240,255,0.2); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,240,255,0.15); }
-    .map-btn.secondary { background: transparent; border-color: rgba(255,255,255,0.1); color: var(--text-dim); }
-    .map-btn.secondary:hover { border-color: rgba(255,255,255,0.25); color: #fff; }
+        .nav-menu {
+            position: fixed;
+            inset: 72px 16px auto;
+            display: none;
+            padding: 16px;
+            background: rgba(18, 18, 18, 0.96);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
 
-    /* ─── VIDEO SHOWCASE ────────────────────────────────── */
-    .video-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1200px; width: 100%; }
-    .video-featured { grid-column: 1 / -1; }
-    .video-main-card {
-      border-radius: 20px; overflow: hidden;
-      background: var(--glass2); border: 1px solid var(--border);
-      position: relative; aspect-ratio: 16/9;
-      cursor: pointer; transition: all 0.5s;
-    }
-    .video-main-card:hover { border-color: rgba(0,240,255,0.25); box-shadow: 0 20px 60px rgba(0,240,255,0.1); }
-    .video-main-card .thumb-placeholder { width: 100%; height: 100%; font-size: 4rem; }
-    .video-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, transparent 30%, rgba(2,4,8,0.95) 100%);
-      display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem;
-    }
-    .video-play-btn {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 70px; height: 70px; border-radius: 50%;
-      background: rgba(0,240,255,0.15); border: 2px solid rgba(0,240,255,0.4);
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.4s; backdrop-filter: blur(10px);
-    }
-    .video-play-btn i { color: var(--cyan); font-size: 1.4rem; margin-left: 4px; }
-    .video-main-card:hover .video-play-btn {
-      background: rgba(0,240,255,0.25);
-      box-shadow: 0 0 40px rgba(0,240,255,0.3);
-      transform: translate(-50%,-50%) scale(1.1);
-    }
-    .video-badge {
-      display: inline-block; font-family: 'Rajdhani', sans-serif; font-size: 0.65rem;
-      letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan);
-      padding: 0.25rem 0.8rem; border-radius: 20px;
-      background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.2);
-      margin-bottom: 0.5rem;
-    }
-    .video-overlay h3 { font-family: 'Orbitron', monospace; font-size: clamp(1rem, 2vw, 1.4rem); font-weight: 700; letter-spacing: 0.05em; color: #fff; margin-bottom: 0.4rem; }
-    .video-overlay p { font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; color: var(--text-dim); }
-    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-    .video-thumb-card {
-      border-radius: 14px; overflow: hidden;
-      background: var(--glass2); border: 1px solid var(--border);
-      position: relative; aspect-ratio: 16/9;
-      cursor: pointer; transition: all 0.4s;
-    }
-    .video-thumb-card:hover { border-color: rgba(0,240,255,0.2); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,240,255,0.06); }
-    .video-thumb-card .thumb-placeholder { width: 100%; height: 100%; font-size: 1.5rem; }
-    .video-thumb-card .video-overlay { padding: 1rem; }
-    .video-thumb-card .video-play-btn { width: 44px; height: 44px; }
-    .video-thumb-card .video-play-btn i { font-size: 0.9rem; }
-    .video-thumb-card h4 { font-family: 'Orbitron', monospace; font-size: 0.72rem; font-weight: 700; color: #fff; letter-spacing: 0.05em; }
+        .nav-menu.is-open {
+            display: grid;
+        }
 
-    /* ─── VIDEO MODAL ───────────────────────────────────── */
-    .modal-overlay {
-      position: fixed; inset: 0; z-index: 1000;
-      background: rgba(2,4,8,0.94);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; visibility: hidden;
-      transition: all 0.3s;
-    }
-    .modal-overlay.open { opacity: 1; visibility: visible; }
-    .modal-inner {
-      display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
-      width: min(92vw, 960px);
-      transform: scale(0.9); opacity: 0;
-      transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
-    }
-    .modal-overlay.open .modal-inner { transform: scale(1); opacity: 1; }
-    .modal-box {
-      width: 100%; aspect-ratio: 16/9;
-      border-radius: 16px; overflow: hidden;
-      border: 1px solid rgba(0,240,255,0.18);
-      background: #000; position: relative;
-      box-shadow: 0 0 80px rgba(0,240,255,0.06), 0 40px 100px rgba(0,0,0,0.9);
-    }
-    .modal-box iframe { width: 100%; height: 100%; border: none; display: block; }
-    .modal-close {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(0,240,255,0.15);
-      color: rgba(0,240,255,0.7); font-size: 1rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s;
-    }
-    .modal-close:hover { background: rgba(0,240,255,0.12); border-color: rgba(0,240,255,0.35); color: var(--cyan); transform: scale(1.1); }
+        .nav-links {
+            display: grid;
+            gap: 10px;
+            list-style: none;
+        }
 
-    /* ─── COMMUNITY SECTION ─────────────────────────────── */
-    .community-card {
-      border-radius: 24px; padding: 3rem;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-      max-width: 700px; width: 100%; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .community-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(0,240,255,0.06), transparent 60%);
-    }
-    .community-rings {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 280px; height: 280px; pointer-events: none;
-    }
-    .community-ring {
-      position: absolute; inset: 0; border-radius: 50%;
-      border: 1px solid rgba(0,240,255,0.05);
-      animation: ringPulse 3s ease-out infinite;
-    }
-    .community-ring:nth-child(2) { inset: 20px; animation-delay: 1s; }
-    .community-ring:nth-child(3) { inset: 40px; animation-delay: 2s; }
-    @keyframes ringPulse { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.1); opacity: 0; } }
-    .community-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+        .nav-links a {
+            display: block;
+            padding: 10px 8px;
+            color: var(--muted);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
 
-    /* ─── FOOTER ─────────────────────────────────────────── */
-    footer {
-      padding: 4rem 2rem 2rem;
-      background: linear-gradient(180deg, transparent, rgba(2,4,8,0.5));
-      border-top: 1px solid rgba(0,240,255,0.06);
-    }
-    .footer-inner { max-width: 1200px; margin: 0 auto; }
-    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; margin-bottom: 3rem; }
-    .footer-brand .nav-logo { font-size: 1.4rem; display: block; margin-bottom: 0.5rem; }
-    .footer-brand p { font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; color: var(--text-dim); max-width: 280px; line-height: 1.5; }
-    .footer-links { display: flex; gap: 3rem; flex-wrap: wrap; }
-    .footer-col h4 { font-family: 'Rajdhani', sans-serif; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan); opacity: 0.6; margin-bottom: 0.8rem; }
-    .footer-col a { display: block; font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; color: var(--text-dim); text-decoration: none; margin-bottom: 0.4rem; transition: color 0.3s; }
-    .footer-col a:hover { color: var(--cyan); }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-bottom p { font-family: 'Rajdhani', sans-serif; font-size: 0.75rem; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; }
-    .footer-socials { display: flex; gap: 1rem; }
-    .footer-socials a { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,240,255,0.05); border: 1px solid rgba(0,240,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(0,240,255,0.5); transition: all 0.3s; text-decoration: none; }
-    .footer-socials a:hover { background: rgba(0,240,255,0.12); border-color: rgba(0,240,255,0.3); color: var(--cyan); transform: translateY(-2px); }
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: var(--text);
+        }
 
-    /* ─── RESPONSIVE ─────────────────────────────────────── */
-    @media (max-width: 768px) {
-      .nav-bar { padding: 1rem 1.2rem; }
-      .nav-links { display: none; }
-      .video-layout { grid-template-columns: 1fr; }
-      .video-grid { grid-template-columns: 1fr; }
-      .maps-grid { grid-template-columns: 1fr; }
-      .hero-btns { flex-direction: column; align-items: center; }
-      .community-btns { flex-direction: column; align-items: center; }
-      .footer-links { gap: 1.5rem; }
-      .corner { display: none; }
-    }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    /* ─── FLOAT ANIM ─────────────────────────────────────── */
-    @keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-    .float-a { animation: floatY 6s ease-in-out infinite; }
-    .float-b { animation: floatY 6s ease-in-out 2s infinite; }
-    .float-c { animation: floatY 6s ease-in-out 4s infinite; }
+        .icon-btn {
+            width: 46px;
+            height: 46px;
+            display: inline-grid;
+            place-items: center;
+            border: 1px solid var(--line);
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
 
-    /* ─── PULSE RING ─────────────────────────────────────── */
-    @keyframes pulseRing { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.08); opacity: 0; } }
-    .pulse-ring {
-      position: absolute; inset: -1px; border-radius: 20px;
-      border: 1px solid rgba(0,240,255,0.2);
-      animation: pulseRing 2.5s ease-out infinite; pointer-events: none;
-    }
+        .btn {
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 18px;
+            border: 1px solid transparent;
+            border-radius: var(--radius);
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+        }
 
-    /* ─── SCROLL REVEAL ─────────────────────────────────── */
-    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.23,1,0.32,1); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+        .btn-primary {
+            color: #fff;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            box-shadow: 0 16px 36px rgba(227, 25, 37, 0.24);
+        }
 
-    /* Audio button */
-    #audio-btn {
-      position: fixed; bottom: 1.8rem; right: 1.8rem; z-index: 200;
-      width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(2,4,8,0.8); border: 1px solid rgba(0,240,255,0.15);
-      backdrop-filter: blur(15px); color: var(--cyan);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 1rem;
-      transition: all 0.3s;
-    }
-    #audio-btn:hover { background: rgba(0,240,255,0.1); border-color: rgba(0,240,255,0.3); transform: scale(1.08); }
-  </style>
+        .btn-ghost {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--line-strong);
+        }
+
+        .btn-dark {
+            color: var(--text);
+            background: #111;
+            border-color: #272727;
+        }
+
+        .btn:hover,
+        .btn:focus-visible,
+        .icon-btn:hover,
+        .icon-btn:focus-visible {
+            transform: translateY(-2px);
+            border-color: rgba(227, 25, 37, 0.45);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+        }
+
+        .hero {
+            position: relative;
+            min-height: 82svh;
+            display: grid;
+            align-items: end;
+            overflow: hidden;
+            isolation: isolate;
+            background:
+                linear-gradient(90deg, rgba(5, 5, 5, 0.9) 0%, rgba(5, 5, 5, 0.56) 48%, rgba(5, 5, 5, 0.84) 100%),
+                linear-gradient(180deg, rgba(5, 5, 5, 0.22) 0%, #080808 100%),
+                url("https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=2200&q=85") center / cover;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background:
+                linear-gradient(90deg, rgba(227, 25, 37, 0.22) 0 1px, transparent 1px 120px),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 120px);
+            opacity: 0.25;
+        }
+
+        .hero-content {
+            padding: 72px 0 42px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 12px;
+            margin-bottom: 18px;
+            color: #ffd9db;
+            background: rgba(227, 25, 37, 0.15);
+            border: 1px solid rgba(227, 25, 37, 0.38);
+            border-radius: 99px;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .hero h1,
+        .section-title,
+        .card-title {
+            font-family: "Rajdhani", sans-serif;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            max-width: 860px;
+            font-size: clamp(3rem, 11vw, 6.8rem);
+            line-height: 0.88;
+            letter-spacing: 0;
+            text-shadow: 0 12px 34px rgba(0, 0, 0, 0.48);
+        }
+
+        .hero p {
+            max-width: 660px;
+            margin-top: 18px;
+            color: #e0e2e5;
+            font-size: clamp(1.03rem, 2vw, 1.28rem);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .hero-badges {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 30px;
+            max-width: 820px;
+        }
+
+        .hero-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(12, 12, 12, 0.64);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius);
+        }
+
+        .hero-badge i,
+        .service-icon,
+        .about-icon {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            color: #fff;
+            background: linear-gradient(135deg, var(--red), #5f1115);
+            border-radius: var(--radius);
+            box-shadow: 0 0 18px rgba(227, 25, 37, 0.18);
+        }
+
+        .hero-badge strong {
+            display: block;
+            font-weight: 800;
+        }
+
+        .hero-badge span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        section {
+            padding: 72px 0;
+        }
+
+        .section-alt {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-head {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            color: #ffb4b8;
+            font-size: 0.86rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .kicker::before {
+            content: "";
+            width: 28px;
+            height: 2px;
+            background: var(--red);
+            box-shadow: 0 0 12px var(--red-glow);
+        }
+
+        .section-title {
+            max-width: 860px;
+            font-size: clamp(2.25rem, 7vw, 4.35rem);
+            line-height: 0.95;
+        }
+
+        .section-head p {
+            max-width: 720px;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .about-grid,
+        .booking-grid,
+        .contact-grid,
+        .dashboard-grid,
+        .tracking-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .about-media,
+        .gallery-item,
+        .contact-map {
+            overflow: hidden;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+        }
+
+        .about-media {
+            min-height: 420px;
+        }
+
+        .about-media img {
+            height: 100%;
+            min-height: 420px;
+        }
+
+        .about-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .about-item,
+        .service-card,
+        .pricing-card,
+        .booking-panel,
+        .tracking-step,
+        .testimonial-card,
+        .dashboard-card,
+        .contact-panel {
+            padding: 20px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(16px);
+            transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+        }
+
+        .about-item {
+            display: flex;
+            gap: 14px;
+        }
+
+        .about-item:hover,
+        .service-card:hover,
+        .pricing-card:hover,
+        .testimonial-card:hover,
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(227, 25, 37, 0.34);
+            box-shadow: 0 22px 58px rgba(0, 0, 0, 0.42);
+        }
+
+        .about-item strong,
+        .service-card h3,
+        .pricing-card h3,
+        .booking-panel h3,
+        .tracking-step h3,
+        .testimonial-card strong,
+        .dashboard-card h3,
+        .contact-panel h3 {
+            display: block;
+            font-size: 1.15rem;
+            margin-bottom: 6px;
+            font-weight: 900;
+        }
+
+        .about-item p,
+        .service-card p,
+        .pricing-card p,
+        .booking-panel p,
+        .tracking-step p,
+        .testimonial-card p,
+        .dashboard-card p,
+        .contact-panel p {
+            color: var(--muted);
+        }
+
+        .stats-grid,
+        .services-grid,
+        .pricing-grid,
+        .emergency-services,
+        .emergency-gallery,
+        .gallery-grid,
+        .testimonial-grid,
+        .admin-stats {
+            display: grid;
+            gap: 16px;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            padding: 18px;
+            border-radius: var(--radius);
+            background: #101113;
+            border: 1px solid var(--line);
+        }
+
+        .stat-card strong {
+            display: block;
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            line-height: 1;
+        }
+
+        .stat-card span {
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+
+        .services-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .service-card {
+            min-height: 100%;
+        }
+
+        .service-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .service-number {
+            color: rgba(255, 255, 255, 0.28);
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+        }
+
+        .pricing-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .pricing-card {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(227, 25, 37, 0.12), transparent 54%),
+                var(--panel);
+        }
+
+        .pricing-card strong {
+            display: block;
+            margin-top: 14px;
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 2.3rem;
+            line-height: 1;
+        }
+
+        .pricing-card span {
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .emergency-section {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(90deg, rgba(8, 8, 8, 0.94), rgba(8, 8, 8, 0.68)),
+                url("https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=1800&q=85") center / cover;
+            border-top: 1px solid rgba(227, 25, 37, 0.28);
+            border-bottom: 1px solid rgba(227, 25, 37, 0.28);
+        }
+
+        .emergency-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(90deg, rgba(227, 25, 37, 0.16) 0 1px, transparent 1px 84px),
+                radial-gradient(circle at 74% 18%, rgba(227, 25, 37, 0.28), transparent 30%);
+            opacity: 0.82;
+        }
+
+        .emergency-shell {
+            position: relative;
+            display: grid;
+            gap: 24px;
+        }
+
+        .emergency-head {
+            display: grid;
+            gap: 16px;
+            max-width: 860px;
+        }
+
+        .emergency-head .section-title {
+            color: #fff;
+        }
+
+        .emergency-head p {
+            max-width: 760px;
+            color: #e7e8ea;
+            font-size: 1.1rem;
+        }
+
+        .emergency-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .emergency-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            color: #fff;
+            background: rgba(227, 25, 37, 0.16);
+            border: 1px solid rgba(227, 25, 37, 0.36);
+            border-radius: 99px;
+            font-size: 0.86rem;
+            font-weight: 900;
+            box-shadow: 0 0 22px rgba(227, 25, 37, 0.14);
+        }
+
+        .emergency-grid {
+            display: grid;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .emergency-card,
+        .emergency-form-panel {
+            padding: 20px;
+            background: rgba(13, 13, 14, 0.78);
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(16px);
+        }
+
+        .emergency-card h3,
+        .emergency-form-panel h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            font-weight: 900;
+        }
+
+        .emergency-card p,
+        .emergency-form-panel p {
+            color: var(--muted);
+        }
+
+        .emergency-services {
+            grid-template-columns: 1fr;
+            margin-top: 18px;
+        }
+
+        .emergency-service {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 13px;
+            min-height: 88px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+        }
+
+        .emergency-service i {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            color: #fff;
+            background: linear-gradient(135deg, var(--red), #571013);
+            border-radius: var(--radius);
+        }
+
+        .emergency-service strong {
+            display: block;
+            margin-bottom: 3px;
+            color: #fff;
+        }
+
+        .emergency-service span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .emergency-gallery {
+            grid-template-columns: 1fr;
+            margin-top: 16px;
+        }
+
+        .emergency-visual {
+            min-height: 220px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            position: relative;
+        }
+
+        .emergency-visual img {
+            height: 100%;
+            min-height: 220px;
+        }
+
+        .emergency-visual span {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            padding: 10px;
+            color: #fff;
+            background: rgba(8, 8, 8, 0.76);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            font-weight: 900;
+        }
+
+        .emergency-cta {
+            display: grid;
+            gap: 14px;
+            margin-top: 18px;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(227, 25, 37, 0.2), rgba(255, 255, 255, 0.04));
+            border: 1px solid rgba(227, 25, 37, 0.34);
+            border-radius: var(--radius);
+        }
+
+        .emergency-cta strong {
+            display: block;
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            line-height: 0.95;
+            text-transform: uppercase;
+        }
+
+        .emergency-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .response-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .response-box {
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+        }
+
+        .response-box strong {
+            display: block;
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.7rem;
+            line-height: 1;
+        }
+
+        .response-box span {
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .customer-map-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .gallery-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .gallery-item {
+            position: relative;
+            min-height: 260px;
+        }
+
+        .gallery-item img {
+            height: 100%;
+            min-height: 260px;
+            transition: transform 0.7s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.06);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            inset: auto 12px 12px;
+            padding: 12px;
+            background: rgba(8, 8, 8, 0.74);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-caption strong {
+            display: block;
+            font-weight: 900;
+        }
+
+        .gallery-caption span {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .booking-panel form {
+            display: grid;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            min-height: 52px;
+            padding: 14px;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .field textarea {
+            min-height: 118px;
+            resize: vertical;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: rgba(227, 25, 37, 0.74);
+            box-shadow: 0 0 0 4px rgba(227, 25, 37, 0.14);
+        }
+
+        .booking-side {
+            display: grid;
+            gap: 16px;
+        }
+
+        .queue-list,
+        .dashboard-list,
+        .contact-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .queue-item,
+        .dashboard-row,
+        .contact-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 13px;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid var(--line);
+        }
+
+        .queue-item strong,
+        .dashboard-row strong,
+        .contact-row strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .queue-item small,
+        .dashboard-row small,
+        .contact-row small {
+            color: var(--muted);
+        }
+
+        .status-pill,
+        .rating-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 10px;
+            color: #fff;
+            background: rgba(227, 25, 37, 0.18);
+            border: 1px solid rgba(227, 25, 37, 0.32);
+            border-radius: 99px;
+            font-size: 0.82rem;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .rating-pill {
+            color: #ffe2a8;
+            background: rgba(245, 176, 65, 0.13);
+            border-color: rgba(245, 176, 65, 0.28);
+        }
+
+        .tracking-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .tracking-step {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: start;
+        }
+
+        .track-dot {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: var(--red);
+            border-radius: 50%;
+            box-shadow: 0 0 0 7px rgba(227, 25, 37, 0.14);
+            font-weight: 900;
+        }
+
+        .testimonial-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 14px;
+            color: var(--amber);
+        }
+
+        .stars svg {
+            fill: currentColor;
+        }
+
+        .testimonial-card strong {
+            margin-top: 16px;
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+            align-items: start;
+        }
+
+        .portal-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .admin-stats {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .dash-metric {
+            padding: 16px;
+            border-radius: var(--radius);
+            background: #101113;
+            border: 1px solid var(--line);
+        }
+
+        .dash-metric strong {
+            display: block;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .dash-metric span {
+            color: var(--muted);
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .bar-chart {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .bar-row {
+            display: grid;
+            grid-template-columns: 82px 1fr 44px;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+
+        .bar-track {
+            height: 10px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 99px;
+        }
+
+        .bar-track span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--red), var(--amber));
+            border-radius: inherit;
+        }
+
+        .invoice-total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--line-strong);
+        }
+
+        .invoice-total strong {
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.9rem;
+            line-height: 1;
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 360px;
+            display: block;
+            border: 0;
+            filter: grayscale(0.18) contrast(1.05);
+        }
+
+        .footer {
+            padding: 30px 0 46px;
+            border-top: 1px solid var(--line);
+            background: #070707;
+        }
+
+        .footer-grid {
+            display: grid;
+            gap: 18px;
+            color: var(--muted);
+        }
+
+        .floating-wa {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 90;
+            width: 58px;
+            height: 58px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: #20b857;
+            border-radius: 50%;
+            box-shadow: 0 18px 44px rgba(32, 184, 87, 0.34);
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            z-index: 120;
+            width: min(420px, calc(100% - 32px));
+            padding: 14px 16px;
+            color: #fff;
+            background: #151515;
+            border: 1px solid rgba(39, 201, 139, 0.38);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transform: translate(-50%, 130%);
+            opacity: 0;
+            transition: transform 0.28s ease, opacity 0.28s ease;
+        }
+
+        .toast.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes load {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(145%);
+            }
+        }
+
+        @media (min-width: 680px) {
+            .hero-badges,
+            .stats-grid,
+            .pricing-grid,
+            .admin-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-grid,
+            .contact-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .field-full {
+                grid-column: 1 / -1;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .emergency-services,
+            .emergency-gallery,
+            .response-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 920px) {
+            .topline {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .nav-menu {
+                position: static;
+                display: block;
+                padding: 0;
+                background: transparent;
+                border: 0;
+                box-shadow: none;
+            }
+
+            .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 18px;
+            }
+
+            .nav-links a {
+                padding: 0;
+            }
+
+            .about-grid,
+            .booking-grid,
+            .dashboard-grid,
+            .contact-grid {
+                grid-template-columns: 0.95fr 1.05fr;
+                align-items: center;
+            }
+
+            .tracking-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .portal-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .pricing-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .emergency-grid {
+                grid-template-columns: 1.03fr 0.97fr;
+            }
+
+            .emergency-gallery {
+                grid-template-columns: 1.1fr 0.9fr;
+            }
+
+            .emergency-visual:first-child {
+                grid-row: span 2;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: 230px;
+            }
+
+            .gallery-item {
+                min-height: auto;
+            }
+
+            .gallery-item img {
+                min-height: auto;
+                height: 100%;
+            }
+
+            .gallery-item.large {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+
+            .testimonial-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr auto;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                width: min(var(--max), calc(100% - 24px));
+            }
+
+            .brand-copy span {
+                max-width: 190px;
+            }
+
+            .hero-actions .btn,
+            .booking-panel .btn {
+                width: 100%;
+            }
+
+            .nav-actions .btn {
+                display: none;
+            }
+
+            .stats-grid,
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "AutoRepair",
+            "name": "Sheva Jaya Motor",
+            "description": "Bengkel mobil umum modern dan terpercaya di Kutoarjo, Purworejo.",
+            "telephone": "+6285799168325",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Jl. Tentara Pelajar, Katerban",
+                "addressLocality": "Kutoarjo",
+                "addressRegion": "Jawa Tengah",
+                "postalCode": "54214",
+                "addressCountry": "ID"
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.7",
+                "bestRating": "5"
+            },
+            "openingHoursSpecification": [
+                {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                    "opens": "08:00",
+                    "closes": "17:00"
+                }
+            ],
+            "priceRange": "Rp200.000 - Rp1.500.000"
+        }
+    </script>
 </head>
-<body>
-
-  <!-- LOADING -->
-  <div id="loading-screen">
-    <div class="loader-ring"></div>
-    <div class="loader-text">NORSDEV.ID</div>
-  </div>
-
-  <!-- CANVAS -->
-  <canvas id="bg-canvas"></canvas>
-
-  <!-- LAYERS -->
-  <div class="grid-layer"></div>
-  <div class="vignette"></div>
-  <div class="scanline"></div>
-
-  <!-- CORNERS -->
-  <div class="corner corner-tl"></div>
-  <div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div>
-  <div class="corner corner-br"></div>
-
-  <!-- HERO BACKGROUND VIDEO -->
-  <video id="hero-video" autoplay muted loop playsinline
-    style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;opacity:0.25;">
-    <source id="hero-video-src" src="" type="video/mp4"/>
-  </video>
-
-  <!-- ROOT (React mounts here) -->
-  <div id="root"></div>
-
-  <!-- AUDIO -->
-  <button id="audio-btn" title="Toggle music" aria-label="Toggle background music">
-    <i class="fas fa-volume-up" id="audio-icon"></i>
-  </button>
-
-  <!-- VIDEO MODAL -->
-  <div class="modal-overlay" id="video-modal" onclick="closeModal(event)">
-    <div class="modal-inner" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeModal()" aria-label="Close video"><i class="fas fa-times"></i></button>
-      <div class="modal-box">
-        <iframe id="modal-iframe" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-      </div>
+<body class="loading">
+    <div class="loader" id="loader" aria-label="Memuat website">
+        <div class="loader-box">
+            <div class="loader-mark" aria-hidden="true"><i data-lucide="wrench"></i></div>
+            <strong>Sheva Jaya Motor</strong>
+            <div class="loader-bar"><span></span></div>
+        </div>
     </div>
-  </div>
 
-  <!-- ─── CONFIG ─────────────────────────────────────────── -->
-  <script>
-  // ═══════════════════════════════════════════════════════
-  //  NORSDEV.ID — CONTENT CONFIG
-  //  Edit this section to update all content easily
-  // ═══════════════════════════════════════════════════════
-  window.NORSDEV_CONFIG = {
-
-    // Social Links
-    discord: 'https://discord.gg/YOUR_DISCORD_LINK',
-    whatsapp: 'https://wa.me/YOUR_WHATSAPP_NUMBER',
-    youtube: 'https://youtube.com/@YOUR_CHANNEL',
-
-    // Services
-    services: [
-      {
-        icon: 'fa-gamepad',
-        iconColor: '#00f0ff',
-        glowColor: 'rgba(0,240,255,0.3)',
-        title: 'Game Development',
-        desc: 'Crafting immersive digital worlds with cutting-edge engines and gameplay systems.',
-        tags: ['Unity', 'Unreal Engine', 'Roblox Studio']
-      },
-      {
-        icon: 'fa-code',
-        iconColor: '#0088ff',
-        glowColor: 'rgba(0,136,255,0.3)',
-        title: 'Website Development',
-        desc: 'Building modern, fast, and scalable web applications with premium UI/UX.',
-        tags: ['React', 'Next.js', 'Full Stack', 'UI/UX']
-      },
-      {
-        icon: 'fa-house-chimney',
-        iconColor: '#7b2fff',
-        glowColor: 'rgba(123,47,255,0.3)',
-        title: 'House Design',
-        desc: 'Minimalist and elegant architectural visualization for interior and exterior spaces.',
-        tags: ['Interior', 'Exterior', '3D Visualization']
-      },
-      {
-        icon: 'fa-cube',
-        iconColor: '#00f0ff',
-        glowColor: 'rgba(0,240,255,0.3)',
-        title: '3D Assets',
-        desc: 'High-quality 3D models, textures, and assets crafted for digital projects.',
-        tags: ['Blender', 'Maya', '3D Models', 'Textures']
-      },
-      {
-        icon: 'fa-robot',
-        iconColor: '#7b2fff',
-        glowColor: 'rgba(123,47,255,0.3)',
-        title: 'AI Chat Systems',
-        desc: 'Smart conversational AI systems integrated with LLMs and NLP pipelines.',
-        tags: ['LLM Integration', 'NLP', 'Custom Bots']
-      }
-    ],
-
-    // Hero background video (replace with your own video URL)
-    heroVideo: 'https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4',
-
-    // Background music — replace with your own music URL
-    // Free ambient music: https://pixabay.com/music/ (search and get direct link)
-    musicUrl: 'https://cdn.pixabay.com/audio/2022/10/25/audio_946bc2ac02.mp3',
-
-    // Map Showcase
-    maps: [
-      {
-        id: 1,
-        title: 'Cyber City Arena',
-        description: 'A neon-lit multiplayer arena set in a futuristic megacity.',
-        category: 'game-maps',
-        tags: ['FPS', 'Multiplayer'],
-        thumbImg: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80',
-        mapLink: '#',
-        videoLink: 'https://youtube.com/watch?v=dQw4w9WgXcQ'
-      },
-      {
-        id: 2,
-        title: 'Minimalist Villa',
-        description: 'A serene modern home environment with natural lighting.',
-        category: 'house-design',
-        tags: ['Interior', 'Minimalist'],
-        thumbImg: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
-        mapLink: '#',
-        videoLink: 'https://youtube.com/watch?v=dQw4w9WgXcQ'
-      },
-      {
-        id: 3,
-        title: 'Sci-Fi Industrial Zone',
-        description: 'Abandoned factory complex in a dystopian world setting.',
-        category: 'game-maps',
-        tags: ['Sci-Fi', 'Exploration'],
-        thumbImg: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
-        mapLink: '#',
-        videoLink: 'https://youtube.com/watch?v=dQw4w9WgXcQ'
-      },
-      {
-        id: 4,
-        title: 'AI Research Facility',
-        description: 'High-tech lab environment showcasing advanced AI systems.',
-        category: 'ai-projects',
-        tags: ['AI', 'Tech Lab'],
-        thumbImg: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80',
-        mapLink: '#',
-        videoLink: 'https://youtube.com/watch?v=dQw4w9WgXcQ'
-      },
-      {
-        id: 5,
-        title: 'Fantasy Battle Map',
-        description: 'Epic fantasy terrain for strategy and RPG game modes.',
-        category: 'game-maps',
-        tags: ['Fantasy', 'Strategy'],
-        thumbImg: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80',
-        mapLink: '#',
-        videoLink: 'https://youtube.com/watch?v=dQw4w9WgXcQ'
-      },
-      {
-        id: 6,
-        title: 'Urban Multiplayer Map',
-        description: 'Dense urban environment designed for fast-paced combat.',
-        category: 'game-maps',
-        tags: ['Urban', 'Combat'],
-        thumbImg: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800&q=80',
-        mapLink: '#',
-        videoLink: 'https://youtube.com/watch?v=dQw4w9WgXcQ'
-      }
-    ],
-
-    // Video Showcase
-    videos: {
-      featured: {
-        title: 'NORSDEV.ID — Studio Reel 2026',
-        description: 'A cinematic overview of our work across game development, 3D art, web engineering, and AI systems.',
-        category: 'Game Showcase',
-        thumbImg: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1200&q=80',
-        videoLink: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ'
-      },
-      grid: [
-        { title: 'Game Dev Showcase', category: 'Game', desc: 'Deep dive into our game projects.', thumbImg: 'https://images.unsplash.com/photo-1552820728-8b83bb6b2b0e?w=600&q=80', videoLink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-        { title: 'Website Projects', category: 'Web', desc: 'Modern web experiences we built.', thumbImg: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80', videoLink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-        { title: '3D Asset Gallery', category: '3D', desc: 'Showcase of our 3D asset library.', thumbImg: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=600&q=80', videoLink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-        { title: 'AI Demo Reel', category: 'AI', desc: 'Conversational AI systems in action.', thumbImg: 'https://images.unsplash.com/photo-1677756119517-756a188d2d94?w=600&q=80', videoLink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }
-      ]
-    },
-
-    // Community section text
-    community: {
-      label: 'Community',
-      heading: 'Join the NORSDEV Community',
-      desc: 'Connect with fellow creators, get project updates, share your work, and collaborate on exciting digital projects.',
-      discordLabel: 'Join Discord',
-      waLabel: 'Contact WhatsApp'
-    },
-
-    // Footer
-    footer: {
-      brand: 'NORSDEV.ID',
-      tagline: 'All-in-one digital solutions for games, web, design, and AI.',
-      copyright: '© 2026 NORSDEV.ID. All rights reserved.'
-    }
-  };
-  </script>
-
-  <!-- ─── THREE.JS BACKGROUND ────────────────────────────── -->
-  <script>
-  (function() {
-    const canvas = document.getElementById('bg-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(72, window.innerWidth / window.innerHeight, 0.1, 500);
-    camera.position.z = 22;
-
-    // Stars
-    const sg = new THREE.BufferGeometry();
-    const N = 2500;
-    const pos = new Float32Array(N * 3);
-    for (let i = 0; i < N; i++) {
-      pos[i*3]   = (Math.random()-.5)*110;
-      pos[i*3+1] = (Math.random()-.5)*110;
-      pos[i*3+2] = (Math.random()-.5)*110;
-    }
-    sg.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const sm = new THREE.PointsMaterial({ color: 0x00f0ff, size: 0.07, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending, depthWrite: false });
-    scene.add(new THREE.Points(sg, sm));
-
-    // Nebula blobs
-    const blobs = [];
-    const bGeo = new THREE.SphereGeometry(1, 8, 8);
-    const colors = [0x00f0ff, 0x7b2fff, 0x0044ff, 0x00ffaa];
-    for (let i = 0; i < 5; i++) {
-      const mat = new THREE.MeshBasicMaterial({ color: colors[i%4], transparent: true, opacity: 0.015, blending: THREE.AdditiveBlending, depthWrite: false });
-      const m = new THREE.Mesh(bGeo, mat);
-      m.position.set((Math.random()-.5)*40, (Math.random()-.5)*30, (Math.random()-.5)*20);
-      m.scale.setScalar(6 + Math.random()*8);
-      scene.add(m);
-      blobs.push(m);
-    }
-
-    // Particles
-    const pg = new THREE.BufferGeometry();
-    const pn = 300;
-    const pp = new Float32Array(pn*3);
-    for (let i=0; i<pn; i++) {
-      pp[i*3]   = (Math.random()-.5)*80;
-      pp[i*3+1] = (Math.random()-.5)*60;
-      pp[i*3+2] = (Math.random()-.5)*40;
-    }
-    pg.setAttribute('position', new THREE.BufferAttribute(pp,3));
-    const pm = new THREE.PointsMaterial({ color: 0x7b2fff, size: 0.04, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending, depthWrite: false });
-    scene.add(new THREE.Points(pg, pm));
-
-    let mx=0, my=0, tx=0, ty=0;
-    document.addEventListener('mousemove', e => {
-      mx = (e.clientX/window.innerWidth-.5)*2;
-      my = -(e.clientY/window.innerHeight-.5)*2;
-    });
-
-    let t = 0;
-    function frame() {
-      requestAnimationFrame(frame);
-      t += 0.0015;
-      tx += (mx-tx)*0.015; ty += (my-ty)*0.015;
-      scene.rotation.y = tx*0.04;
-      scene.rotation.x = ty*0.04;
-      scene.rotation.z += 0.0002;
-      blobs.forEach((b,i) => {
-        b.position.y += Math.sin(t+i*1.5)*0.005;
-        b.position.x += Math.cos(t*0.7+i)*0.003;
-      });
-      renderer.render(scene, camera);
-    }
-    frame();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  })();
-  </script>
-
-  <!-- ─── GSAP SCROLL REVEAL ──────────────────────────────── -->
-  <script>
-  gsap.registerPlugin(ScrollTrigger);
-
-  function initReveal() {
-    gsap.utils.toArray('.reveal').forEach(el => {
-      gsap.fromTo(el,
-        { opacity: 0, y: 50, filter: 'blur(4px)' },
-        {
-          opacity: 1, y: 0, filter: 'blur(0px)',
-          duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
-        }
-      );
-    });
-
-    gsap.utils.toArray('.reveal-left').forEach(el => {
-      gsap.fromTo(el,
-        { opacity: 0, x: -60, filter: 'blur(4px)' },
-        {
-          opacity: 1, x: 0, filter: 'blur(0px)',
-          duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
-        }
-      );
-    });
-
-    gsap.utils.toArray('.reveal-right').forEach(el => {
-      gsap.fromTo(el,
-        { opacity: 0, x: 60, filter: 'blur(4px)' },
-        {
-          opacity: 1, x: 0, filter: 'blur(0px)',
-          duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
-        }
-      );
-    });
-  }
-
-  // Hero entrance animation
-  function initHeroAnim() {
-    const tl = gsap.timeline({ delay: 0.3 });
-    tl.fromTo('#hero .hero-badge', { opacity: 0, y: 30, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power3.out' })
-      .fromTo('#hero .hero-title', { opacity: 0, y: 50, scale: 0.95, filter: 'blur(8px)' }, { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 1, ease: 'power3.out' }, '-=0.3')
-      .fromTo('#hero .hero-subtitle', { opacity: 0, y: 25, filter: 'blur(4px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.7, ease: 'power2.out' }, '-=0.4')
-      .fromTo('#hero .hero-statement', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
-      .fromTo('#hero .hero-tags', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2')
-      .fromTo('#hero .hero-btns', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2');
-  }
-  </script>
-
-  <!-- ─── APP COMPONENTS ──────────────────────────────────── -->
-  <script type="text/babel">
-  const { useState, useEffect, useRef } = React;
-
-  // ─── NAV ───────────────────────────────────────────────
-  function Nav() {
-    const [scrolled, setScrolled] = useState(false);
-    useEffect(() => {
-      const onScroll = () => setScrolled(window.scrollY > 60);
-      window.addEventListener('scroll', onScroll);
-      return () => window.removeEventListener('scroll', onScroll);
-    }, []);
-
-    return (
-      <nav className="nav-bar" style={scrolled ? { background: 'rgba(2,4,8,0.92)', borderColor: 'rgba(0,240,255,0.1)' } : {}}>
-        <div className="nav-logo">NORSDEV.ID</div>
-        <div className="nav-links">
-          {['Services','Maps','Videos','Community'].map(link => (
-            <a key={link} className="nav-link" href={`#${link.toLowerCase()}`}>{link}</a>
-          ))}
+    <header class="site-header">
+        <div class="topline">
+            <div class="container topline-inner">
+                <span><i data-lucide="map-pin"></i> Jl. Tentara Pelajar, Katerban, Kutoarjo, Purworejo</span>
+                <a href="tel:+6285799168325"><i data-lucide="phone"></i> 0857-9916-8325</a>
+            </div>
         </div>
-        <div className="nav-cta">
-          <a href={window.NORSDEV_CONFIG.discord} target="_blank" rel="noopener" className="btn-primary glass-btn" style={{ padding: '0.5rem 1.2rem', fontSize: '0.72rem' }}>
-            <i className="fab fa-discord"></i> Discord
-          </a>
-        </div>
-      </nav>
-    );
-  }
 
-  // ─── HERO ───────────────────────────────────────────────
-  function Hero() {
-    const cfg = window.NORSDEV_CONFIG;
-    return (
-      <section id="hero">
-        <div className="hero-glow-center"></div>
-        <div className="hero-glow-purple"></div>
-        <div className="hero-inner">
-          <div className="hero-badge">
-            <i className="fas fa-fw fa-circle" style={{ fontSize: '0.4rem' }}></i>
-            Digital Studio
-          </div>
-
-          <h1 className="hero-title">NORSDEV.ID</h1>
-          <p className="hero-subtitle">Create. Build. Innovate.</p>
-          <p className="hero-statement">
-            We craft premium digital experiences — from immersive games and high-performance websites to stunning 3D assets and intelligent AI systems.
-          </p>
-
-          <div className="hero-tags">
-            {['Game Dev', 'Web Engineering', '3D Assets', 'House Design', 'AI Systems'].map(t => (
-              <span key={t} className="hero-tag">{t}</span>
-            ))}
-          </div>
-
-          <div className="hero-btns">
-            <a href={cfg.discord} target="_blank" rel="noopener" className="btn-primary glass-btn">
-              <i className="fab fa-discord"></i> Join Discord
+        <div class="container nav">
+            <a class="brand" href="#beranda" aria-label="Sheva Jaya Motor">
+                <span class="brand-mark">SJM</span>
+                <span class="brand-copy">
+                    <strong>Sheva Jaya Motor</strong>
+                    <span>Bengkel mobil modern Kutoarjo</span>
+                </span>
             </a>
-            <a href={cfg.whatsapp} target="_blank" rel="noopener" className="btn-primary cyan">
-              <i className="fab fa-whatsapp"></i> Contact WhatsApp
-            </a>
-          </div>
-        </div>
 
-        <div className="scroll-indicator">
-          <span>Scroll</span>
-          <div className="scroll-line"></div>
-        </div>
-      </section>
-    );
-  }
+            <nav class="nav-menu" id="nav-menu" aria-label="Navigasi utama">
+                <ul class="nav-links">
+                    <li><a href="#beranda">Beranda</a></li>
+                    <li><a href="#tentang">Tentang</a></li>
+                    <li><a href="#layanan">Layanan</a></li>
+                    <li><a href="#darurat">Darurat</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#booking">Booking</a></li>
+                    <li><a href="#testimoni">Testimoni</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+            </nav>
 
-  // ─── SERVICE CARD ───────────────────────────────────────
-  function ServiceCard({ icon, iconColor, glowColor, title, desc, tags, delay }) {
-    return (
-      <div className="service-card reveal" style={{ transitionDelay: `${delay}ms` }}>
-        <div className="service-glow" style={{ background: glowColor }}></div>
-        <div className="service-icon" style={{ color: iconColor }}>
-          <i className={`fas fa-fw ${icon}`}></i>
-        </div>
-        <h3>{title}</h3>
-        <p>{desc}</p>
-        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-          {tags.map(tag => (
-            <span key={tag} style={{ fontFamily: 'Rajdhani,sans-serif', fontSize: '0.65rem', letterSpacing: '0.1em', padding: '0.2rem 0.6rem', borderRadius: '20px', background: 'rgba(0,240,255,0.04)', border: '1px solid rgba(0,240,255,0.08)', color: 'rgba(0,240,255,0.4)' }}>{tag}</span>
-          ))}
-        </div>
-        <div className="pulse-ring" style={{ animationDelay: `${delay * 0.3}s` }}></div>
-      </div>
-    );
-  }
-
-  // ─── SERVICES SECTION ───────────────────────────────────
-  function ServicesSection() {
-    const cfg = window.NORSDEV_CONFIG;
-    return (
-      <section id="services" className="section">
-        <div className="section-label reveal">What We Do</div>
-        <h2 className="section-heading reveal">Our Capabilities</h2>
-        <div className="divider reveal"></div>
-        <p className="section-desc reveal" style={{ marginBottom: '3rem' }}>
-          From AAA-grade game development to cutting-edge AI — we build digital experiences that push the boundary of what's possible.
-        </p>
-        <div className="services-grid">
-          {cfg.services.map((svc, i) => (
-            <ServiceCard key={svc.title} {...svc} delay={i * 120} />
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  // ─── MAP CARD ───────────────────────────────────────────
-  function MapCard({ map, delay }) {
-    return (
-      <div className="map-card reveal" style={{ transitionDelay: `${delay}ms` }}>
-        <div className="map-thumb">
-          <img
-            src={map.thumbImg}
-            alt={map.title}
-            loading="lazy"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            onError={(e) => { e.target.style.display = 'none'; }}
-          />
-          <div className="map-thumb-overlay"></div>
-          <div className="map-tags">
-            {map.tags.map(tag => (
-              <span key={tag} className="map-tag">{tag}</span>
-            ))}
-          </div>
-        </div>
-        <div className="map-body">
-          <h3>{map.title}</h3>
-          <p>{map.description}</p>
-          <div className="map-actions">
-            <a href={map.mapLink} target="_blank" rel="noopener" className="map-btn primary">
-              <i className="fas fa-external-link-alt"></i> Open Map
-            </a>
-            <button onClick={() => openVideoModal(map.videoLink)} className="map-btn secondary">
-              <i className="fas fa-play"></i> Video
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // ─── MAPS SECTION ───────────────────────────────────────
-  function MapsSection() {
-    const cfg = window.NORSDEV_CONFIG;
-    const [filter, setFilter] = useState('all');
-    const categories = ['all', 'game-maps', 'house-design', '3d-showcase', 'ai-projects'];
-    const labels = { all: 'All', 'game-maps': 'Game Maps', 'house-design': 'House Design', '3d-showcase': '3D Showcase', 'ai-projects': 'AI Projects' };
-
-    const filtered = filter === 'all' ? cfg.maps : cfg.maps.filter(m => m.category === filter);
-
-    return (
-      <section id="maps" className="section" style={{ background: 'linear-gradient(180deg, transparent, rgba(0,68,255,0.02), transparent)' }}>
-        <div className="section-label reveal">Portfolio</div>
-        <h2 className="section-heading reveal">Map Showcase</h2>
-        <div className="divider reveal"></div>
-        <p className="section-desc reveal" style={{ marginBottom: '2rem' }}>
-          Explore our collection of handcrafted game environments, architectural visualizations, and 3D worlds.
-        </p>
-
-        <div className="filter-tabs reveal">
-          {categories.map(cat => (
-            <button key={cat} className={`filter-tab ${filter === cat ? 'active' : ''}`} onClick={() => setFilter(cat)}>
-              {labels[cat]}
-            </button>
-          ))}
-        </div>
-
-        <div className="maps-grid">
-          {filtered.map((map, i) => (
-            <MapCard key={map.id} map={map} delay={i * 100} />
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  // ─── VIDEO SECTION ───────────────────────────────────────
-  function VideoSection() {
-    const cfg = window.NORSDEV_CONFIG;
-    const feat = cfg.videos.featured;
-    const grid = cfg.videos.grid;
-
-    return (
-      <section id="videos" className="section">
-        <div className="section-label reveal">Media</div>
-        <h2 className="section-heading reveal">Video Showcase</h2>
-        <div className="divider reveal"></div>
-        <p className="section-desc reveal" style={{ marginBottom: '3rem' }}>
-          Watch our projects come to life — from gameplay demos and web walkthroughs to 3D asset previews and AI demonstrations.
-        </p>
-
-        <div className="video-layout">
-          {/* Featured */}
-          <div className="video-featured reveal">
-            <div className="video-main-card" onClick={() => openVideoModal(feat.videoLink)}>
-              <img src={feat.thumbImg} alt={feat.title} loading="lazy"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={(e) => { e.target.style.display='none'; }} />
-              <div className="map-thumb-overlay"></div>
-              <div className="video-play-btn"><i className="fas fa-play"></i></div>
-              <div className="video-overlay">
-                <span className="video-badge">{feat.category}</span>
-                <h3>{feat.title}</h3>
-                <p>{feat.description}</p>
-              </div>
+            <div class="nav-actions">
+                <a class="btn btn-primary" href="#booking"><i data-lucide="calendar-check"></i> Booking</a>
+                <button class="icon-btn menu-toggle" id="menu-toggle" type="button" aria-label="Buka menu" aria-expanded="false">
+                    <i data-lucide="menu"></i>
+                </button>
             </div>
-          </div>
-
-          {/* Grid */}
-          {grid.map((vid, i) => (
-            <div key={i} className="video-thumb-card reveal" onClick={() => openVideoModal(vid.videoLink)} style={{ transitionDelay: `${(i+1)*100}ms` }}>
-              <img src={vid.thumbImg} alt={vid.title} loading="lazy"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={(e) => { e.target.style.display='none'; }} />
-              <div className="map-thumb-overlay"></div>
-              <div className="video-play-btn" style={{ width: 44, height: 44 }}><i className="fas fa-play"></i></div>
-              <div className="video-overlay">
-                <span className="video-badge" style={{ fontSize: '0.55rem', padding: '0.15rem 0.5rem' }}>{vid.category}</span>
-                <h4>{vid.title}</h4>
-              </div>
-            </div>
-          ))}
         </div>
-      </section>
-    );
-  }
+    </header>
 
-  // ─── COMMUNITY SECTION ──────────────────────────────────
-  function CommunitySection() {
-    const cfg = window.NORSDEV_CONFIG;
-    return (
-      <section id="community" className="section" style={{ background: 'linear-gradient(180deg, transparent, rgba(0,240,255,0.02), transparent)' }}>
-        <div className="community-card reveal">
-          <div className="community-rings">
-            <div className="community-ring"></div>
-            <div className="community-ring"></div>
-            <div className="community-ring"></div>
-          </div>
-          <div style={{ position: 'relative', zIndex: 2 }}>
-            <div className="section-label" style={{ opacity: 0.6 }}>{cfg.community.label}</div>
-            <h2 className="section-heading" style={{ fontSize: 'clamp(1.4rem, 3vw, 2.2rem)' }}>{cfg.community.heading}</h2>
-            <div className="divider"></div>
-            <p className="section-desc" style={{ margin: '0 auto 1.5rem' }}>{cfg.community.desc}</p>
-            <div className="community-btns">
-              <a href={cfg.discord} target="_blank" rel="noopener" className="btn-primary discord-btn">
-                <i className="fab fa-discord"></i> {cfg.community.discordLabel}
-              </a>
-              <a href={cfg.whatsapp} target="_blank" rel="noopener" className="btn-primary wa-btn">
-                <i className="fab fa-whatsapp"></i> {cfg.community.waLabel}
-              </a>
+    <main id="beranda">
+        <section class="hero">
+            <div class="container hero-content reveal">
+                <span class="eyebrow"><i data-lucide="badge-check"></i> Rating 4.7 | Bengkel mobil umum modern di Kutoarjo</span>
+                <h1>Servis Mobil Cepat, Profesional & Terpercaya</h1>
+                <p>Melayani berbagai servis mobil dengan teknisi berpengalaman, alat modern, dan harga transparan.</p>
+
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#booking"><i data-lucide="calendar-plus"></i> Booking Service</a>
+                    <a class="btn btn-ghost" href="https://wa.me/6285799168325?text=Halo%20Sheva%20Jaya%20Motor%2C%20saya%20ingin%20konsultasi%20servis%20mobil." target="_blank" rel="noreferrer"><i data-lucide="message-circle"></i> Chat WhatsApp</a>
+                    <a class="btn btn-ghost" href="#layanan"><i data-lucide="list-checks"></i> Lihat Layanan</a>
+                </div>
+
+                <div class="hero-badges">
+                    <article class="hero-badge">
+                        <i data-lucide="timer"></i>
+                        <div>
+                            <strong>Servis cepat dan terjadwal</strong>
+                            <span>Booking online membantu antrean lebih rapi.</span>
+                        </div>
+                    </article>
+                    <article class="hero-badge">
+                        <i data-lucide="receipt-text"></i>
+                        <div>
+                            <strong>Harga transparan</strong>
+                            <span>Estimasi biaya dijelaskan sebelum pengerjaan.</span>
+                        </div>
+                    </article>
+                    <article class="hero-badge">
+                        <i data-lucide="scan-line"></i>
+                        <div>
+                            <strong>Alat modern</strong>
+                            <span>Scanning dan pengecekan menyeluruh untuk kendaraan harian.</span>
+                        </div>
+                    </article>
+                </div>
             </div>
-          </div>
+        </section>
+
+        <section id="tentang">
+            <div class="container about-grid">
+                <div class="about-media reveal">
+                    <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?auto=format&fit=crop&w=1300&q=85" alt="Mekanik profesional sedang memperbaiki mobil di workshop">
+                </div>
+
+                <div>
+                    <div class="section-head reveal">
+                        <span class="kicker">Tentang Bengkel</span>
+                        <h2 class="section-title">Workshop aktif dengan pengerjaan rapi dan pelayanan ramah.</h2>
+                        <p>Sheva Jaya Motor melayani kebutuhan servis mobil umum untuk pelanggan di Kutoarjo, Purworejo, dan sekitarnya dengan suasana bengkel yang profesional, praktis, dan terpercaya.</p>
+                    </div>
+
+                    <div class="about-list">
+                        <article class="about-item reveal">
+                            <span class="about-icon"><i data-lucide="user-check"></i></span>
+                            <div>
+                                <strong>Teknisi berpengalaman</strong>
+                                <p>Pengecekan dilakukan teliti oleh mekanik yang terbiasa menangani berbagai merek mobil.</p>
+                            </div>
+                        </article>
+                        <article class="about-item reveal">
+                            <span class="about-icon"><i data-lucide="gauge"></i></span>
+                            <div>
+                                <strong>Pengerjaan cepat</strong>
+                                <p>Alur servis dibuat efisien agar mobil bisa kembali digunakan dengan aman dan nyaman.</p>
+                            </div>
+                        </article>
+                        <article class="about-item reveal">
+                            <span class="about-icon"><i data-lucide="shield-check"></i></span>
+                            <div>
+                                <strong>Sparepart berkualitas</strong>
+                                <p>Rekomendasi part disesuaikan dengan kebutuhan kendaraan dan budget pelanggan.</p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="stats-grid">
+                        <article class="stat-card reveal">
+                            <strong>1000+</strong>
+                            <span>mobil diservis</span>
+                        </article>
+                        <article class="stat-card reveal">
+                            <strong>500+</strong>
+                            <span>customer tetap</span>
+                        </article>
+                        <article class="stat-card reveal">
+                            <strong>10+</strong>
+                            <span>tahun pengalaman</span>
+                        </article>
+                        <article class="stat-card reveal">
+                            <strong>4.7</strong>
+                            <span>rating customer</span>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="layanan" class="section-alt">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Layanan</span>
+                    <h2 class="section-title">Servis lengkap untuk mobil harian, keluarga, dan operasional.</h2>
+                    <p>Pilih layanan sesuai kebutuhan kendaraan. Setiap pekerjaan bisa dikonsultasikan dulu sebelum diproses.</p>
+                </div>
+
+                <div class="services-grid">
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="settings"></i></span><span class="service-number">01</span></div>
+                        <h3>Tune Up</h3>
+                        <p>Optimasi performa mesin, pembakaran, dan respons kendaraan.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="droplets"></i></span><span class="service-number">02</span></div>
+                        <h3>Ganti Oli</h3>
+                        <p>Penggantian oli mesin dan filter sesuai rekomendasi kendaraan.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="cog"></i></span><span class="service-number">03</span></div>
+                        <h3>Servis Mesin</h3>
+                        <p>Pengecekan bunyi, tenaga mesin, kebocoran, dan gejala performa turun.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="wind"></i></span><span class="service-number">04</span></div>
+                        <h3>Servis AC</h3>
+                        <p>Perawatan AC, cek freon, blower, evaporator, dan kenyamanan kabin.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="wrench"></i></span><span class="service-number">05</span></div>
+                        <h3>Kaki Kaki</h3>
+                        <p>Perbaikan suspensi, bunyi jalan, stabilitas, dan kenyamanan berkendara.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="disc-3"></i></span><span class="service-number">06</span></div>
+                        <h3>Spooring & Balancing</h3>
+                        <p>Setir lebih stabil, ban lebih awet, dan handling lebih presisi.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="paintbrush"></i></span><span class="service-number">07</span></div>
+                        <h3>Body Repair</h3>
+                        <p>Perbaikan panel ringan, baret, penyok, dan finishing bodi.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="scan-line"></i></span><span class="service-number">08</span></div>
+                        <h3>Scanning Mobil</h3>
+                        <p>Diagnosa awal untuk indikator error, sensor, dan sistem kendaraan.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="zap"></i></span><span class="service-number">09</span></div>
+                        <h3>Kelistrikan Mobil</h3>
+                        <p>Pengecekan aki, lampu, kabel, starter, dan sistem elektrikal.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="circle-dot"></i></span><span class="service-number">10</span></div>
+                        <h3>Ganti Ban</h3>
+                        <p>Pemasangan, rotasi, pengecekan tekanan, dan rekomendasi ban.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="sparkles"></i></span><span class="service-number">11</span></div>
+                        <h3>Detailing Mobil</h3>
+                        <p>Pembersihan interior-eksterior agar mobil terlihat segar kembali.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="harga">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Estimasi Harga</span>
+                    <h2 class="section-title">Transparan sejak awal sebelum mobil dikerjakan.</h2>
+                    <p>Harga final dapat berubah menyesuaikan tipe mobil, kondisi kendaraan, dan sparepart yang dibutuhkan.</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <article class="pricing-card reveal">
+                        <h3>Ganti Oli</h3>
+                        <p>Oli mesin, filter, dan general check ringan.</p>
+                        <strong>Rp250rb</strong>
+                        <span>mulai dari</span>
+                    </article>
+                    <article class="pricing-card reveal">
+                        <h3>Tune Up</h3>
+                        <p>Pembersihan, pengecekan performa, dan setting dasar.</p>
+                        <strong>Rp500rb</strong>
+                        <span>mulai dari</span>
+                    </article>
+                    <article class="pricing-card reveal">
+                        <h3>Servis AC</h3>
+                        <p>Cek sistem pendingin, freon, dan komponen kabin.</p>
+                        <strong>Rp350rb</strong>
+                        <span>mulai dari</span>
+                    </article>
+                    <article class="pricing-card reveal">
+                        <h3>Spooring</h3>
+                        <p>Setelan kaki-kaki dan stabilitas kemudi.</p>
+                        <strong>Rp200rb</strong>
+                        <span>mulai dari</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="darurat" class="emergency-section">
+            <div class="container emergency-shell">
+                <div class="emergency-head reveal">
+                    <span class="kicker">Layanan Darurat 24 Jam</span>
+                    <h2 class="section-title">Towing, mekanik panggilan, dan bantuan mobil mogok.</h2>
+                    <p>Sheva Jaya Motor siap membantu kendaraan Anda kapan saja dengan layanan towing dan mekanik panggilan langsung ke lokasi customer.</p>
+                    <div class="emergency-badges">
+                        <span class="emergency-badge"><i data-lucide="zap"></i> Fast Response</span>
+                        <span class="emergency-badge"><i data-lucide="siren"></i> Emergency Service</span>
+                        <span class="emergency-badge"><i data-lucide="clock-3"></i> 24 Jam Siaga</span>
+                        <span class="emergency-badge"><i data-lucide="badge-check"></i> Mekanik Berpengalaman</span>
+                    </div>
+                </div>
+
+                <div class="emergency-grid">
+                    <div>
+                        <article class="emergency-card reveal">
+                            <h3>Bantuan darurat area Kutoarjo dan Purworejo</h3>
+                            <p>Hubungi tim Sheva Jaya Motor untuk towing, derek mobil, aki soak, overheat, starter bermasalah, ganti ban darurat, dan servis panggilan.</p>
+
+                            <div class="emergency-services">
+                                <div class="emergency-service"><i data-lucide="truck"></i><div><strong>Jasa towing mobil</strong><span>Pengangkutan kendaraan mogok atau rusak.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="map-pinned"></i><div><strong>Mekanik datang ke lokasi</strong><span>Roadside assistance langsung ke titik customer.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="battery-warning"></i><div><strong>Aki soak</strong><span>Cek aki, jumper, dan rekomendasi penggantian.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="circle-dot"></i><div><strong>Ganti ban darurat</strong><span>Bantuan saat ban bocor atau pecah di jalan.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="thermometer-sun"></i><div><strong>Overheat</strong><span>Pengecekan awal sistem pendingin kendaraan.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="key-round"></i><div><strong>Starter bermasalah</strong><span>Bantuan diagnosa mobil sulit menyala.</span></div></div>
+                            </div>
+
+                            <div class="response-grid">
+                                <div class="response-box"><strong>15-30 menit</strong><span>Estimasi respon area dekat bengkel</span></div>
+                                <div class="response-box"><strong>Kutoarjo+</strong><span>Layanan sekitar Kutoarjo dan Purworejo</span></div>
+                            </div>
+
+                            <div class="emergency-cta">
+                                <div>
+                                    <strong>Butuh Bantuan Darurat?</strong>
+                                    <p>Hubungi Sheva Jaya Motor Sekarang</p>
+                                </div>
+                                <div class="emergency-actions">
+                                    <a class="btn btn-primary" href="https://wa.me/6285799168325?text=EMERGENCY%20Sheva%20Jaya%20Motor%2C%20saya%20butuh%20bantuan%20darurat%20mobil.%20Lokasi%3A" target="_blank" rel="noreferrer"><i data-lucide="message-circle"></i> WhatsApp Emergency</a>
+                                    <a class="btn btn-ghost" href="tel:+6285799168325"><i data-lucide="phone-call"></i> Call Now</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <div class="emergency-gallery">
+                            <article class="emergency-visual reveal">
+                                <img src="https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=1200&q=85" alt="Mobil towing modern untuk layanan darurat">
+                                <span>Mobil towing modern</span>
+                            </article>
+                            <article class="emergency-visual reveal">
+                                <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=85" alt="Mekanik roadside assistance bekerja profesional">
+                                <span>Mekanik roadside assistance</span>
+                            </article>
+                            <article class="emergency-visual reveal">
+                                <img src="https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?auto=format&fit=crop&w=900&q=85" alt="Kendaraan sedang ditangani untuk layanan derek">
+                                <span>Kendaraan sedang diderek</span>
+                            </article>
+                        </div>
+                    </div>
+
+                    <article class="emergency-form-panel reveal">
+                        <h3>Kirim lokasi customer ke WhatsApp</h3>
+                        <p>Isi detail darurat, lalu tombol ini akan membuka WhatsApp dengan format pesan lengkap untuk tim Sheva Jaya Motor.</p>
+
+                        <form id="emergency-form">
+                            <div class="form-grid">
+                                <div class="field">
+                                    <label for="emergency-name">Nama customer</label>
+                                    <input id="emergency-name" name="nama" type="text" placeholder="Nama lengkap" required>
+                                </div>
+                                <div class="field">
+                                    <label for="emergency-phone">Nomor HP</label>
+                                    <input id="emergency-phone" name="hp" type="tel" placeholder="08xxxxxxxxxx" required>
+                                </div>
+                                <div class="field">
+                                    <label for="emergency-car">Jenis mobil</label>
+                                    <input id="emergency-car" name="mobil" type="text" placeholder="Contoh: Avanza 2018" required>
+                                </div>
+                                <div class="field">
+                                    <label for="emergency-service">Jenis bantuan</label>
+                                    <select id="emergency-service" name="layanan" required>
+                                        <option value="">Pilih bantuan</option>
+                                        <option>Towing Mobil</option>
+                                        <option>Emergency Roadside Assistance</option>
+                                        <option>Mekanik Datang ke Lokasi</option>
+                                        <option>Servis Panggilan</option>
+                                        <option>Bantuan Mobil Mogok</option>
+                                        <option>Aki Soak</option>
+                                        <option>Ganti Ban Darurat</option>
+                                        <option>Starter Bermasalah</option>
+                                        <option>Overheat</option>
+                                        <option>Derek Mobil</option>
+                                    </select>
+                                </div>
+                                <div class="field field-full">
+                                    <label for="emergency-location">Maps lokasi customer</label>
+                                    <input id="emergency-location" name="lokasi" type="text" placeholder="Tempel link Google Maps atau klik Ambil Lokasi Saya" required>
+                                    <div class="customer-map-actions">
+                                        <button class="btn btn-ghost" id="get-location-btn" type="button"><i data-lucide="crosshair"></i> Ambil Lokasi Saya</button>
+                                        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Jl.%20Tentara%20Pelajar%20Katerban%20Kutoarjo%20Purworejo" target="_blank" rel="noreferrer"><i data-lucide="map"></i> Cek Area Maps</a>
+                                    </div>
+                                </div>
+                                <div class="field field-full">
+                                    <label for="emergency-note">Kondisi kendaraan</label>
+                                    <textarea id="emergency-note" name="catatan" placeholder="Contoh: mobil mogok di pinggir jalan, aki soak, mesin overheat, atau butuh derek ke bengkel."></textarea>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" type="submit"><i data-lucide="siren"></i> Kirim Emergency WhatsApp</button>
+                        </form>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="tracking" class="section-alt">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Tracking Service</span>
+                    <h2 class="section-title">Progress servis jelas dari mobil masuk sampai selesai.</h2>
+                    <p>Alur tracking membantu pelanggan memahami posisi kendaraan tanpa perlu menebak-nebak.</p>
+                </div>
+
+                <div class="tracking-grid">
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">1</span>
+                        <div>
+                            <h3>Mobil Diterima</h3>
+                            <p>Data kendaraan dan keluhan dicatat.</p>
+                        </div>
+                    </article>
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">2</span>
+                        <div>
+                            <h3>Pengecekan</h3>
+                            <p>Teknisi melakukan diagnosa awal.</p>
+                        </div>
+                    </article>
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">3</span>
+                        <div>
+                            <h3>Proses Servis</h3>
+                            <p>Pengerjaan sesuai persetujuan pelanggan.</p>
+                        </div>
+                    </article>
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">4</span>
+                        <div>
+                            <h3>Quality Control</h3>
+                            <p>Hasil diperiksa sebelum serah terima.</p>
+                        </div>
+                    </article>
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">5</span>
+                        <div>
+                            <h3>Selesai</h3>
+                            <p>Mobil siap diambil pelanggan.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Gallery Workshop</span>
+                    <h2 class="section-title">Suasana bengkel aktif, mekanik bekerja, dan mobil customer.</h2>
+                    <p>Foto visual dibuat untuk membangun atmosfer bengkel modern, profesional, dan ramai customer.</p>
+                </div>
+
+                <div class="gallery-grid">
+                    <article class="gallery-item large reveal">
+                        <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1500&q=85" alt="Workshop bengkel mobil modern">
+                        <div class="gallery-caption"><strong>Foto bengkel</strong><span>Area servis modern dan bersih.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=85" alt="Mekanik bekerja dengan alat bengkel">
+                        <div class="gallery-caption"><strong>Mekanik bekerja</strong><span>Pengecekan detail oleh teknisi.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1504222490345-c075b6008014?auto=format&fit=crop&w=900&q=85" alt="Alat bengkel modern">
+                        <div class="gallery-caption"><strong>Alat modern</strong><span>Peralatan kerja tertata.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=85" alt="Mobil customer setelah servis">
+                        <div class="gallery-caption"><strong>Mobil customer</strong><span>Kendaraan siap digunakan.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=85" alt="Before after detailing mobil">
+                        <div class="gallery-caption"><strong>Before after</strong><span>Finishing lebih rapi.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1517524206127-48bbd363f3d7?auto=format&fit=crop&w=900&q=85" alt="Proses servis mesin mobil">
+                        <div class="gallery-caption"><strong>Proses servis</strong><span>Pengecekan mesin dan komponen.</span></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="booking" class="section-alt">
+            <div class="container booking-grid">
+                <article class="booking-panel reveal">
+                    <span class="kicker">Booking Online</span>
+                    <h2 class="section-title">Atur jadwal servis tanpa antre panjang.</h2>
+                    <p>Isi form booking, data akan masuk ke dashboard booking lokal dan pesan WhatsApp siap dikirim ke Sheva Jaya Motor.</p>
+
+                    <form id="booking-form">
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="nama">Nama customer</label>
+                                <input id="nama" name="nama" type="text" placeholder="Nama lengkap" required>
+                            </div>
+                            <div class="field">
+                                <label for="hp">Nomor HP</label>
+                                <input id="hp" name="hp" type="tel" placeholder="08xxxxxxxxxx" required>
+                            </div>
+                            <div class="field">
+                                <label for="mobil">Jenis mobil</label>
+                                <input id="mobil" name="mobil" type="text" placeholder="Toyota Avanza 2020" required>
+                            </div>
+                            <div class="field">
+                                <label for="layanan-select">Layanan</label>
+                                <select id="layanan-select" name="layanan" required>
+                                    <option value="">Pilih layanan</option>
+                                    <option>Tune Up</option>
+                                    <option>Ganti Oli</option>
+                                    <option>Servis Mesin</option>
+                                    <option>Servis AC</option>
+                                    <option>Kaki Kaki</option>
+                                    <option>Spooring & Balancing</option>
+                                    <option>Body Repair</option>
+                                    <option>Scanning Mobil</option>
+                                    <option>Kelistrikan Mobil</option>
+                                    <option>Ganti Ban</option>
+                                    <option>Detailing Mobil</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="tanggal">Tanggal booking</label>
+                                <input id="tanggal" name="tanggal" type="date" required>
+                            </div>
+                            <div class="field">
+                                <label for="jam">Jam booking</label>
+                                <select id="jam" name="jam" required>
+                                    <option value="">Pilih jam</option>
+                                    <option>08:00</option>
+                                    <option>09:00</option>
+                                    <option>10:00</option>
+                                    <option>11:00</option>
+                                    <option>13:00</option>
+                                    <option>14:00</option>
+                                    <option>15:00</option>
+                                    <option>16:00</option>
+                                </select>
+                            </div>
+                            <div class="field field-full">
+                                <label for="catatan">Catatan kerusakan</label>
+                                <textarea id="catatan" name="catatan" placeholder="Contoh: mesin brebet, AC kurang dingin, kaki-kaki bunyi, atau lampu indikator menyala."></textarea>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit"><i data-lucide="calendar-check"></i> Booking Sekarang</button>
+                    </form>
+                </article>
+
+                <div class="booking-side">
+                    <article class="booking-panel reveal">
+                        <h3>Live Booking System</h3>
+                        <p>Simulasi booking aktif yang langsung berubah saat form dikirim dari halaman ini.</p>
+                        <div class="queue-list" id="live-booking-list"></div>
+                    </article>
+                    <article class="booking-panel reveal">
+                        <h3>Jam Operasional</h3>
+                        <p>Senin - Sabtu, 08:00 - 17:00. Minggu dapat konsultasi via WhatsApp terlebih dahulu.</p>
+                        <div class="queue-list">
+                            <div class="queue-item">
+                                <div><strong>Estimasi konfirmasi</strong><small>Melalui WhatsApp</small></div>
+                                <span class="status-pill">5-15 menit</span>
+                            </div>
+                            <div class="queue-item">
+                                <div><strong>Area layanan</strong><small>Kutoarjo, Purworejo, dan sekitar</small></div>
+                                <span class="status-pill">Aktif</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard">
+            <div class="container dashboard-grid">
+                <div class="section-head reveal">
+                    <span class="kicker">Dashboard Admin</span>
+                    <h2 class="section-title">Ringkasan operasional bengkel dalam tampilan modern.</h2>
+                    <p>Dashboard ini membaca data booking yang masuk dari form di halaman, cocok sebagai contoh sistem admin bengkel.</p>
+                </div>
+
+                <article class="dashboard-card reveal">
+                    <h3>Booking hari ini</h3>
+                    <div class="admin-stats">
+                        <div class="dash-metric"><strong id="dash-total">0</strong><span>Total booking</span></div>
+                        <div class="dash-metric"><strong id="dash-pending">0</strong><span>Menunggu konfirmasi</span></div>
+                        <div class="dash-metric"><strong id="dash-rating">4.7</strong><span>Rating customer</span></div>
+                        <div class="dash-metric"><strong id="dash-finished">0</strong><span>Estimasi selesai</span></div>
+                    </div>
+
+                    <div class="bar-chart" aria-label="Grafik layanan populer">
+                        <div class="bar-row"><span>Ganti Oli</span><div class="bar-track"><span style="width: 86%"></span></div><span>86%</span></div>
+                        <div class="bar-row"><span>Tune Up</span><div class="bar-track"><span style="width: 72%"></span></div><span>72%</span></div>
+                        <div class="bar-row"><span>Servis AC</span><div class="bar-track"><span style="width: 64%"></span></div><span>64%</span></div>
+                        <div class="bar-row"><span>Kaki Kaki</span><div class="bar-track"><span style="width: 58%"></span></div><span>58%</span></div>
+                    </div>
+
+                    <div class="dashboard-list" id="dashboard-list"></div>
+                </article>
+            </div>
+        </section>
+
+        <section id="portal" class="section-alt">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Portal Customer</span>
+                    <h2 class="section-title">Riwayat servis dan invoice digital dalam satu sistem.</h2>
+                    <p>Konsep UI ini menampilkan bagaimana pelanggan bisa melihat kendaraan, histori pengerjaan, approval biaya, dan invoice setelah servis selesai.</p>
+                </div>
+
+                <div class="portal-grid">
+                    <article class="dashboard-card reveal">
+                        <h3>Akun customer</h3>
+                        <p>Data kendaraan pelanggan tersimpan rapi untuk booking ulang dan reminder servis berikutnya.</p>
+                        <div class="dashboard-list">
+                            <div class="dashboard-row">
+                                <div><strong>Toyota Avanza 2020</strong><small>Terakhir servis: ganti oli dan tune up</small></div>
+                                <span class="status-pill">Aktif</span>
+                            </div>
+                            <div class="dashboard-row">
+                                <div><strong>Honda Brio 2019</strong><small>Reminder: cek AC dan filter kabin</small></div>
+                                <span class="status-pill">Reminder</span>
+                            </div>
+                            <div class="dashboard-row">
+                                <div><strong>Approval sparepart</strong><small>Filter oli dan kampas rem depan</small></div>
+                                <span class="status-pill">Menunggu</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="dashboard-card reveal">
+                        <h3>Invoice digital</h3>
+                        <p>Rincian biaya servis dibuat jelas agar pelanggan tahu komponen, jasa, dan total pembayaran.</p>
+                        <div class="dashboard-list">
+                            <div class="dashboard-row">
+                                <div><strong>Oli mesin premium</strong><small>4 liter</small></div>
+                                <span>Rp420rb</span>
+                            </div>
+                            <div class="dashboard-row">
+                                <div><strong>Filter oli</strong><small>Sparepart berkualitas</small></div>
+                                <span>Rp85rb</span>
+                            </div>
+                            <div class="dashboard-row">
+                                <div><strong>Jasa tune up</strong><small>Pembersihan dan pengecekan</small></div>
+                                <span>Rp250rb</span>
+                            </div>
+                        </div>
+                        <div class="invoice-total">
+                            <span>Total estimasi</span>
+                            <strong>Rp755rb</strong>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimoni">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Testimoni</span>
+                    <h2 class="section-title">Customer puas dengan servis cepat dan penjelasan yang jelas.</h2>
+                    <p>Testimoni berikut bisa diganti dengan review asli pelanggan saat sudah tersedia.</p>
+                </div>
+
+                <div class="testimonial-grid">
+                    <article class="testimonial-card reveal">
+                        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+                        <p>"Mobil saya dicek dengan teliti, estimasi biaya jelas, dan pengerjaan selesai sesuai janji."</p>
+                        <strong>Pak Agus</strong>
+                        <span class="rating-pill">Rating 5.0</span>
+                    </article>
+                    <article class="testimonial-card reveal">
+                        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+                        <p>"AC mobil kembali dingin. Mekaniknya ramah dan mau menjelaskan kerusakan dengan detail."</p>
+                        <strong>Bu Rina</strong>
+                        <span class="rating-pill">Rating 4.8</span>
+                    </article>
+                    <article class="testimonial-card reveal">
+                        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+                        <p>"Booking lewat WhatsApp praktis, datang langsung ditangani. Cocok buat mobil harian."</p>
+                        <strong>Mas Dimas</strong>
+                        <span class="rating-pill">Rating 4.7</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="kontak">
+            <div class="container contact-grid">
+                <article class="contact-panel reveal">
+                    <span class="kicker">Kontak</span>
+                    <h2 class="section-title">Datang ke Sheva Jaya Motor atau booking via WhatsApp.</h2>
+                    <p>Bengkel mobil umum modern dan terpercaya di Kutoarjo, siap membantu servis kendaraan Anda.</p>
+
+                    <div class="contact-list">
+                        <div class="contact-row">
+                            <div><strong>WhatsApp / Telepon</strong><small>0857-9916-8325</small></div>
+                            <a class="status-pill" href="tel:+6285799168325">Panggil</a>
+                        </div>
+                        <div class="contact-row">
+                            <div><strong>Alamat lengkap</strong><small>Jl. Tentara Pelajar, Katerban, Kec. Kutoarjo, Kabupaten Purworejo, Jawa Tengah 54214, Indonesia</small></div>
+                            <i data-lucide="map-pin"></i>
+                        </div>
+                        <div class="contact-row">
+                            <div><strong>Jam operasional</strong><small>Senin - Sabtu, 08:00 - 17:00</small></div>
+                            <i data-lucide="clock"></i>
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="https://wa.me/6285799168325?text=Halo%20Sheva%20Jaya%20Motor%2C%20saya%20ingin%20booking%20servis%20mobil." target="_blank" rel="noreferrer"><i data-lucide="message-circle"></i> Chat WhatsApp</a>
+                        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Sheva%20Jaya%20Motor%20Jl.%20Tentara%20Pelajar%20Katerban%20Kutoarjo%20Purworejo" target="_blank" rel="noreferrer"><i data-lucide="navigation"></i> Arah Lokasi</a>
+                    </div>
+                </article>7777777777777777777777777777777777777777777777777777777777777
+
+                <div class="contact-map reveal">
+                    <iframe
+                        title="Google Maps Sheva Jaya Motor"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps?q=Sheva%20Jaya%20Motor%20Jl.%20Tentara%20Pelajar%20Katerban%20Kutoarjo%20Purworejo%20Jawa%20Tengah%2054214&output=embed">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="brand">
+                <span class="brand-mark">SJM</span>
+                <span class="brand-copy">
+                    <strong>Sheva Jaya Motor</strong>
+                    <span>Bengkel mobil modern dan terpercaya di Kutoarjo.</span>
+                </span>
+            </div>
+            <p>&copy; <span id="year"></span> Sheva Jaya Motor. Servis mobil cepat, profesional, dan transparan.</p>
         </div>
-      </section>
-    );
-  }
+    </footer>
 
-  // ─── FOOTER ─────────────────────────────────────────────
-  function Footer() {
-    const cfg = window.NORSDEV_CONFIG;
-    return (
-      <footer>
-        <div className="footer-inner">
-          <div className="footer-top">
-            <div className="footer-brand">
-              <span className="nav-logo">{cfg.footer.brand}</span>
-              <p>{cfg.footer.tagline}</p>
-            </div>
-            <div className="footer-links">
-              <div className="footer-col">
-                <h4>Navigate</h4>
-                <a href="#services">Services</a>
-                <a href="#maps">Map Showcase</a>
-                <a href="#videos">Video Showcase</a>
-                <a href="#community">Community</a>
-              </div>
-              <div className="footer-col">
-                <h4>Connect</h4>
-                <a href={cfg.discord} target="_blank" rel="noopener"><i className="fab fa-discord" style={{ marginRight: 6, opacity: 0.5 }}></i> Discord</a>
-                <a href={cfg.whatsapp} target="_blank" rel="noopener"><i className="fab fa-whatsapp" style={{ marginRight: 6, opacity: 0.5 }}></i> WhatsApp</a>
-                <a href={cfg.youtube} target="_blank" rel="noopener"><i className="fab fa-youtube" style={{ marginRight: 6, opacity: 0.5 }}></i> YouTube</a>
-              </div>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>{cfg.footer.copyright}</p>
-            <div className="footer-socials">
-              <a href={cfg.discord} target="_blank" rel="noopener" aria-label="Discord"><i className="fab fa-discord"></i></a>
-              <a href={cfg.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><i className="fab fa-whatsapp"></i></a>
-              <a href={cfg.youtube} target="_blank" rel="noopener" aria-label="YouTube"><i className="fab fa-youtube"></i></a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    );
-  }
+    <a class="floating-wa" href="https://wa.me/6285799168325?text=Halo%20Sheva%20Jaya%20Motor%2C%20saya%20ingin%20konsultasi%20servis%20mobil." target="_blank" rel="noreferrer" aria-label="Chat WhatsApp">
+        <i data-lucide="message-circle"></i>
+    </a>
 
-  // ─── APP ───────────────────────────────────────────────
-  function App() {
-    return (
-      <>
-        <Nav />
-        <Hero />
-        <ServicesSection />
-        <MapsSection />
-        <VideoSection />
-        <CommunitySection />
-        <Footer />
-      </>
-    );
-  }
+    <div class="toast" id="toast" role="status" aria-live="polite">Booking tersimpan. WhatsApp akan dibuka untuk konfirmasi.</div>
 
-  // ─── MOUNT ──────────────────────────────────────────────
-  const root = ReactDOM.createRoot(document.getElementById('root'));
-  root.render(<App />);
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+        const SHEVA_WHATSAPP = "6285799168325";
+        const STORAGE_KEY = "sheva-jaya-bookings";
+        const bookingForm = document.getElementById("booking-form");
+        const emergencyForm = document.getElementById("emergency-form");
+        const emergencyLocationInput = document.getElementById("emergency-location");
+        const getLocationBtn = document.getElementById("get-location-btn");
+        const dateInput = document.getElementById("tanggal");
+        const menuToggle = document.getElementById("menu-toggle");
+        const navMenu = document.getElementById("nav-menu");
+        const liveBookingList = document.getElementById("live-booking-list");
+        const dashboardList = document.getElementById("dashboard-list");
+        const dashTotal = document.getElementById("dash-total");
+        const dashPending = document.getElementById("dash-pending");
+        const dashFinished = document.getElementById("dash-finished");
+        const toast = document.getElementById("toast");
 
-  // ─── INIT AFTER MOUNT ───────────────────────────────────
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('loading-screen').classList.add('hidden');
-      initHeroAnim();
-      setTimeout(initReveal, 100);
-    }, 1500);
-  });
-  </script>
+        const starterBookings = [
+            {
+                nama: "Budi Santoso",
+                hp: "085700000001",
+                mobil: "Toyota Avanza",
+                layanan: "Ganti Oli",
+                tanggal: "Hari ini",
+                jam: "09:00",
+                catatan: "General check",
+                status: "Pengecekan"
+            },
+            {
+                nama: "Rina Wulandari",
+                hp: "085700000002",
+                mobil: "Honda Brio",
+                layanan: "Servis AC",
+                tanggal: "Hari ini",
+                jam: "10:00",
+                catatan: "AC kurang dingin",
+                status: "Proses Servis"
+            },
+            {
+                nama: "Dimas Prasetyo",
+                hp: "085700000003",
+                mobil: "Daihatsu Xenia",
+                layanan: "Kaki Kaki",
+                tanggal: "Hari ini",
+                jam: "13:00",
+                catatan: "Bunyi saat jalan rusak",
+                status: "Menunggu"
+            }
+        ];
 
-  <!-- ─── MODAL + AUDIO SCRIPTS ──────────────────────────── -->
-  <script>
-  function openVideoModal(link) {
-    if (!link || link === '#') return;
-    const modal = document.getElementById('video-modal');
-    const iframe = document.getElementById('modal-iframe');
-    // Convert YouTube watch URL to embed URL
-    let embedUrl = link;
-    if (link.includes('youtube.com/watch?v=')) {
-      const vid = link.split('v=')[1].split('&')[0];
-      embedUrl = `https://www.youtube.com/embed/${vid}?autoplay=1`;
-    } else if (link.includes('youtu.be/')) {
-      const vid = link.split('youtu.be/')[1].split('?')[0];
-      embedUrl = `https://www.youtube.com/embed/${vid}?autoplay=1`;
-    } else if (!link.includes('embed')) {
-      embedUrl = link;
-    }
-    iframe.src = embedUrl;
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+        function initIcons() {
+            if (window.lucide) {
+                window.lucide.createIcons({
+                    attrs: {
+                        "stroke-width": 2.2
+                    }
+                });
+            }
+        }
 
-  function closeModal(e) {
-    if (e && e.target !== e.currentTarget) return;
-    const modal = document.getElementById('video-modal');
-    const iframe = document.getElementById('modal-iframe');
-    modal.classList.remove('open');
-    iframe.src = '';
-    document.body.style.overflow = '';
-  }
+        function getBookings() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(starterBookings));
+                return starterBookings;
+            }
 
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+            try {
+                return JSON.parse(stored);
+            } catch (error) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(starterBookings));
+                return starterBookings;
+            }
+        }
 
-  // Audio toggle — uses NORSDEV_CONFIG.musicUrl
-  let audioOn = false;
-  const audioBtn = document.getElementById('audio-btn');
-  const audioIcon = document.getElementById('audio-icon');
-  const bgMusic = new Audio();
+        function saveBookings(bookings) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+        }
 
-  function initMedia() {
-    // Set hero background video from config
-    const heroVideoSrc = document.getElementById('hero-video-src');
-    if (heroVideoSrc && window.NORSDEV_CONFIG.heroVideo) {
-      heroVideoSrc.src = window.NORSDEV_CONFIG.heroVideo;
-      const heroVideo = document.getElementById('hero-video');
-      heroVideo.load();
-    }
+        function bookingTemplate(booking, index) {
+            return `
+                <div class="queue-item">
+                    <div>
+                        <strong>${booking.layanan}</strong>
+                        <small>${booking.nama} | ${booking.mobil} | ${booking.jam}</small>
+                    </div>
+                    <span class="status-pill">${booking.status || (index === 0 ? "Baru" : "Aktif")}</span>
+                </div>
+            `;
+        }
 
-    // Set background music from config
-    if (window.NORSDEV_CONFIG.musicUrl) {
-      bgMusic.src = window.NORSDEV_CONFIG.musicUrl;
-      bgMusic.loop = true;
-      bgMusic.volume = 0.18;
-    }
-  }
+        function dashboardTemplate(booking) {
+            return `
+                <div class="dashboard-row">
+                    <div>
+                        <strong>${booking.nama}</strong>
+                        <small>${booking.layanan} | ${booking.mobil} | ${booking.tanggal} ${booking.jam}</small>
+                    </div>
+                    <span class="status-pill">${booking.status || "Baru"}</span>
+                </div>
+            `;
+        }
 
-  audioBtn.addEventListener('click', () => {
-    audioOn = !audioOn;
-    if (audioOn) {
-      bgMusic.play().catch(() => {});
-      audioIcon.className = 'fas fa-volume-up';
-    } else {
-      bgMusic.pause();
-      audioIcon.className = 'fas fa-volume-mute';
-    }
-  });
+        function renderBookings() {
+            const bookings = getBookings();
+            const latest = bookings.slice(-5).reverse();
+            const pending = bookings.filter(function (booking) {
+                return booking.status !== "Selesai";
+            });
 
-  // Init hero video + music from config
-  initMedia();
-  </script>
+            liveBookingList.innerHTML = latest.map(bookingTemplate).join("");
+            dashboardList.innerHTML = latest.map(dashboardTemplate).join("");
+            dashTotal.textContent = bookings.length;
+            dashPending.textContent = pending.length;
+            dashFinished.textContent = Math.max(bookings.length - pending.length, 0);
+        }
 
+        function showToast() {
+            toast.classList.add("show");
+            window.setTimeout(function () {
+                toast.classList.remove("show");
+            }, 3200);
+        }
+
+        function openWhatsApp(message) {
+            window.open("https://wa.me/" + SHEVA_WHATSAPP + "?text=" + encodeURIComponent(message), "_blank", "noopener");
+        }
+
+        if (dateInput) {
+            const today = new Date();
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const day = String(today.getDate()).padStart(2, "0");
+            dateInput.min = today.getFullYear() + "-" + month + "-" + day;
+        }
+
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener("click", function () {
+                const isOpen = navMenu.classList.toggle("is-open");
+                menuToggle.setAttribute("aria-expanded", String(isOpen));
+                menuToggle.innerHTML = isOpen ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+                initIcons();
+            });
+
+            navMenu.addEventListener("click", function (event) {
+                if (event.target.closest("a")) {
+                    navMenu.classList.remove("is-open");
+                    menuToggle.setAttribute("aria-expanded", "false");
+                    menuToggle.innerHTML = '<i data-lucide="menu"></i>';
+                    initIcons();
+                }
+            });
+        }
+
+        if (bookingForm) {
+            bookingForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(bookingForm);
+                const booking = {
+                    nama: formData.get("nama"),
+                    hp: formData.get("hp"),
+                    mobil: formData.get("mobil"),
+                    layanan: formData.get("layanan"),
+                    tanggal: formData.get("tanggal"),
+                    jam: formData.get("jam"),
+                    catatan: formData.get("catatan") || "-",
+                    status: "Menunggu"
+                };
+
+                const bookings = getBookings();
+                bookings.push(booking);
+                saveBookings(bookings);
+                renderBookings();
+                showToast();
+
+                const message = [
+                    "Halo Sheva Jaya Motor, saya ingin booking servis mobil.",
+                    "",
+                    "Nama: " + booking.nama,
+                    "Nomor HP: " + booking.hp,
+                    "Jenis Mobil: " + booking.mobil,
+                    "Layanan: " + booking.layanan,
+                    "Tanggal Booking: " + booking.tanggal,
+                    "Jam Booking: " + booking.jam,
+                    "Catatan Kerusakan: " + booking.catatan
+                ].join("\n");
+
+                openWhatsApp(message);
+                bookingForm.reset();
+                if (dateInput) {
+                    const today = new Date();
+                    const month = String(today.getMonth() + 1).padStart(2, "0");
+                    const day = String(today.getDate()).padStart(2, "0");
+                    dateInput.min = today.getFullYear() + "-" + month + "-" + day;
+                }
+            });
+        }
+
+        if (getLocationBtn && emergencyLocationInput) {
+            getLocationBtn.addEventListener("click", function () {
+                if (!navigator.geolocation) {
+                    emergencyLocationInput.value = "Browser tidak mendukung geolocation. Silakan tempel link Google Maps manual.";
+                    return;
+                }
+
+                getLocationBtn.textContent = "Mengambil lokasi...";
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        const latitude = position.coords.latitude.toFixed(6);
+                        const longitude = position.coords.longitude.toFixed(6);
+                        emergencyLocationInput.value = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+                        getLocationBtn.innerHTML = '<i data-lucide="check"></i> Lokasi Terambil';
+                        initIcons();
+                    },
+                    function () {
+                        emergencyLocationInput.value = "Gagal mengambil lokasi. Silakan tempel link Google Maps manual.";
+                        getLocationBtn.innerHTML = '<i data-lucide="crosshair"></i> Ambil Lokasi Saya';
+                        initIcons();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 12000,
+                        maximumAge: 0
+                    }
+                );
+            });
+        }
+
+        if (emergencyForm) {
+            emergencyForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(emergencyForm);
+                const emergencyBooking = {
+                    nama: formData.get("nama"),
+                    hp: formData.get("hp"),
+                    mobil: formData.get("mobil"),
+                    layanan: "DARURAT - " + formData.get("layanan"),
+                    tanggal: "Emergency",
+                    jam: "Sekarang",
+                    catatan: (formData.get("catatan") || "-") + " | Lokasi: " + formData.get("lokasi"),
+                    status: "Emergency"
+                };
+
+                const bookings = getBookings();
+                bookings.push(emergencyBooking);
+                saveBookings(bookings);
+                renderBookings();
+                showToast();
+
+                const message = [
+                    "EMERGENCY Sheva Jaya Motor, saya butuh bantuan darurat mobil.",
+                    "",
+                    "Nama: " + formData.get("nama"),
+                    "Nomor HP: " + formData.get("hp"),
+                    "Jenis Mobil: " + formData.get("mobil"),
+                    "Jenis Bantuan: " + formData.get("layanan"),
+                    "Lokasi Customer: " + formData.get("lokasi"),
+                    "Kondisi Kendaraan: " + (formData.get("catatan") || "-"),
+                    "",
+                    "Mohon estimasi waktu kedatangan mekanik/towing."
+                ].join("\n");
+
+                openWhatsApp(message);
+                emergencyForm.reset();
+                if (getLocationBtn) {
+                    getLocationBtn.innerHTML = '<i data-lucide="crosshair"></i> Ambil Lokasi Saya';
+                    initIcons();
+                }
+            });
+        }
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        const revealItems = document.querySelectorAll(".reveal");
+        const observer = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.14 }
+        );
+
+        revealItems.forEach(function (item) {
+            observer.observe(item);
+        });
+
+        function finishLoading() {
+            document.body.classList.remove("loading");
+            document.getElementById("loader").classList.add("is-hidden");
+            initIcons();
+            renderBookings();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            window.setTimeout(finishLoading, 450);
+        });
+
+        window.addEventListener("load", finishLoading);
+
+        initIcons();
+        renderBookings();
+    </script>
 </body>
 </html>
