@@ -1,0 +1,2426 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sheva Jaya Motor | Bengkel Mobil Modern Kutoarjo</title>
+    <meta name="description" content="Sheva Jaya Motor adalah bengkel mobil umum modern dan terpercaya di Kutoarjo, Purworejo. Booking servis mobil, tune up, ganti oli, servis AC, kaki-kaki, spooring, body repair, scanning, dan detailing.">
+    <meta name="keywords" content="Sheva Jaya Motor, bengkel mobil Kutoarjo, bengkel mobil Purworejo, servis mobil Kutoarjo, tune up, ganti oli, servis AC, spooring balancing">
+    <meta name="theme-color" content="#111111">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #080808;
+            --coal: #111111;
+            --steel: #1b1f24;
+            --panel: rgba(24, 25, 27, 0.78);
+            --panel-solid: #18191b;
+            --line: rgba(255, 255, 255, 0.11);
+            --line-strong: rgba(255, 255, 255, 0.2);
+            --text: #f5f5f3;
+            --muted: #b5b8bd;
+            --soft: #e9edf1;
+            --red: #e31925;
+            --red-dark: #9d1119;
+            --red-glow: rgba(227, 25, 37, 0.42);
+            --amber: #f5b041;
+            --green: #27c98b;
+            --shadow: 0 20px 54px rgba(0, 0, 0, 0.32);
+            --radius: 8px;
+            --max: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Barlow", sans-serif;
+            color: var(--text);
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(180deg, var(--black) 0%, #101114 42%, #0b0b0c 100%);
+            background-size: 72px 72px, auto;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body.loading {
+            overflow: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            object-fit: cover;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        .container {
+            width: min(var(--max), calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .loader {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: grid;
+            place-items: center;
+            background: #050505;
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+        }
+
+        .loader.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-box {
+            width: min(280px, 78vw);
+            text-align: center;
+        }
+
+        .loader-mark {
+            width: 68px;
+            height: 68px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 18px;
+            border: 2px solid var(--line-strong);
+            border-top-color: var(--red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-box strong {
+            display: block;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .loader-bar {
+            height: 4px;
+            margin-top: 16px;
+            background: #242424;
+            overflow: hidden;
+            border-radius: 99px;
+        }
+
+        .loader-bar span {
+            display: block;
+            height: 100%;
+            width: 70%;
+            background: linear-gradient(90deg, var(--red), var(--amber));
+            animation: load 1.4s ease-in-out infinite;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8, 8, 8, 0.82);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .topline {
+            display: none;
+            border-bottom: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .topline-inner {
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .topline a,
+        .topline span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .brand-mark {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            border: 1px solid rgba(227, 25, 37, 0.38);
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            box-shadow: 0 0 26px rgba(227, 25, 37, 0.22);
+            border-radius: var(--radius);
+            font-family: "Rajdhani", sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .brand-copy {
+            display: grid;
+            gap: 1px;
+            min-width: 0;
+        }
+
+        .brand-copy strong {
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.15rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .brand-copy span {
+            color: var(--muted);
+            font-size: 0.82rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-menu {
+            position: fixed;
+            inset: 72px 16px auto;
+            display: none;
+            padding: 16px;
+            background: rgba(18, 18, 18, 0.96);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .nav-menu.is-open {
+            display: grid;
+        }
+
+        .nav-links {
+            display: grid;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 10px 8px;
+            color: var(--muted);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: var(--text);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 46px;
+            height: 46px;
+            display: inline-grid;
+            place-items: center;
+            border: 1px solid var(--line);
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+
+        .btn {
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 18px;
+            border: 1px solid transparent;
+            border-radius: var(--radius);
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            box-shadow: 0 16px 36px rgba(227, 25, 37, 0.24);
+        }
+
+        .btn-ghost {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--line-strong);
+        }
+
+        .btn-dark {
+            color: var(--text);
+            background: #111;
+            border-color: #272727;
+        }
+
+        .btn:hover,
+        .btn:focus-visible,
+        .icon-btn:hover,
+        .icon-btn:focus-visible {
+            transform: translateY(-2px);
+            border-color: rgba(227, 25, 37, 0.45);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+        }
+
+        .hero {
+            position: relative;
+            min-height: 82svh;
+            display: grid;
+            align-items: end;
+            overflow: hidden;
+            isolation: isolate;
+            background:
+                linear-gradient(90deg, rgba(5, 5, 5, 0.9) 0%, rgba(5, 5, 5, 0.56) 48%, rgba(5, 5, 5, 0.84) 100%),
+                linear-gradient(180deg, rgba(5, 5, 5, 0.22) 0%, #080808 100%),
+                url("https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=2200&q=85") center / cover;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background:
+                linear-gradient(90deg, rgba(227, 25, 37, 0.22) 0 1px, transparent 1px 120px),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 120px);
+            opacity: 0.25;
+        }
+
+        .hero-content {
+            padding: 72px 0 42px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 12px;
+            margin-bottom: 18px;
+            color: #ffd9db;
+            background: rgba(227, 25, 37, 0.15);
+            border: 1px solid rgba(227, 25, 37, 0.38);
+            border-radius: 99px;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .hero h1,
+        .section-title,
+        .card-title {
+            font-family: "Rajdhani", sans-serif;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            max-width: 860px;
+            font-size: clamp(3rem, 11vw, 6.8rem);
+            line-height: 0.88;
+            letter-spacing: 0;
+            text-shadow: 0 12px 34px rgba(0, 0, 0, 0.48);
+        }
+
+        .hero p {
+            max-width: 660px;
+            margin-top: 18px;
+            color: #e0e2e5;
+            font-size: clamp(1.03rem, 2vw, 1.28rem);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .hero-badges {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 30px;
+            max-width: 820px;
+        }
+
+        .hero-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(12, 12, 12, 0.64);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius);
+        }
+
+        .hero-badge i,
+        .service-icon,
+        .about-icon {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            color: #fff;
+            background: linear-gradient(135deg, var(--red), #5f1115);
+            border-radius: var(--radius);
+            box-shadow: 0 0 18px rgba(227, 25, 37, 0.18);
+        }
+
+        .hero-badge strong {
+            display: block;
+            font-weight: 800;
+        }
+
+        .hero-badge span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        section {
+            padding: 72px 0;
+        }
+
+        .section-alt {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-head {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            color: #ffb4b8;
+            font-size: 0.86rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .kicker::before {
+            content: "";
+            width: 28px;
+            height: 2px;
+            background: var(--red);
+            box-shadow: 0 0 12px var(--red-glow);
+        }
+
+        .section-title {
+            max-width: 860px;
+            font-size: clamp(2.25rem, 7vw, 4.35rem);
+            line-height: 0.95;
+        }
+
+        .section-head p {
+            max-width: 720px;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .about-grid,
+        .booking-grid,
+        .contact-grid,
+        .dashboard-grid,
+        .tracking-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .about-media,
+        .gallery-item,
+        .contact-map {
+            overflow: hidden;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+        }
+
+        .about-media {
+            min-height: 420px;
+        }
+
+        .about-media img {
+            height: 100%;
+            min-height: 420px;
+        }
+
+        .about-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .about-item,
+        .service-card,
+        .pricing-card,
+        .booking-panel,
+        .tracking-step,
+        .testimonial-card,
+        .dashboard-card,
+        .contact-panel {
+            padding: 20px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(16px);
+            transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+        }
+
+        .about-item {
+            display: flex;
+            gap: 14px;
+        }
+
+        .about-item:hover,
+        .service-card:hover,
+        .pricing-card:hover,
+        .testimonial-card:hover,
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(227, 25, 37, 0.34);
+            box-shadow: 0 22px 58px rgba(0, 0, 0, 0.42);
+        }
+
+        .about-item strong,
+        .service-card h3,
+        .pricing-card h3,
+        .booking-panel h3,
+        .tracking-step h3,
+        .testimonial-card strong,
+        .dashboard-card h3,
+        .contact-panel h3 {
+            display: block;
+            font-size: 1.15rem;
+            margin-bottom: 6px;
+            font-weight: 900;
+        }
+
+        .about-item p,
+        .service-card p,
+        .pricing-card p,
+        .booking-panel p,
+        .tracking-step p,
+        .testimonial-card p,
+        .dashboard-card p,
+        .contact-panel p {
+            color: var(--muted);
+        }
+
+        .stats-grid,
+        .services-grid,
+        .pricing-grid,
+        .emergency-services,
+        .emergency-gallery,
+        .gallery-grid,
+        .testimonial-grid,
+        .admin-stats {
+            display: grid;
+            gap: 16px;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr 1fr;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            padding: 18px;
+            border-radius: var(--radius);
+            background: #101113;
+            border: 1px solid var(--line);
+        }
+
+        .stat-card strong {
+            display: block;
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            line-height: 1;
+        }
+
+        .stat-card span {
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+
+        .services-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .service-card {
+            min-height: 100%;
+        }
+
+        .service-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .service-number {
+            color: rgba(255, 255, 255, 0.28);
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+        }
+
+        .pricing-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .pricing-card {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(227, 25, 37, 0.12), transparent 54%),
+                var(--panel);
+        }
+
+        .pricing-card strong {
+            display: block;
+            margin-top: 14px;
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 2.3rem;
+            line-height: 1;
+        }
+
+        .pricing-card span {
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .emergency-section {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(90deg, rgba(8, 8, 8, 0.94), rgba(8, 8, 8, 0.68)),
+                url("https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=1800&q=85") center / cover;
+            border-top: 1px solid rgba(227, 25, 37, 0.28);
+            border-bottom: 1px solid rgba(227, 25, 37, 0.28);
+        }
+
+        .emergency-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(90deg, rgba(227, 25, 37, 0.16) 0 1px, transparent 1px 84px),
+                radial-gradient(circle at 74% 18%, rgba(227, 25, 37, 0.28), transparent 30%);
+            opacity: 0.82;
+        }
+
+        .emergency-shell {
+            position: relative;
+            display: grid;
+            gap: 24px;
+        }
+
+        .emergency-head {
+            display: grid;
+            gap: 16px;
+            max-width: 860px;
+        }
+
+        .emergency-head .section-title {
+            color: #fff;
+        }
+
+        .emergency-head p {
+            max-width: 760px;
+            color: #e7e8ea;
+            font-size: 1.1rem;
+        }
+
+        .emergency-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .emergency-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            color: #fff;
+            background: rgba(227, 25, 37, 0.16);
+            border: 1px solid rgba(227, 25, 37, 0.36);
+            border-radius: 99px;
+            font-size: 0.86rem;
+            font-weight: 900;
+            box-shadow: 0 0 22px rgba(227, 25, 37, 0.14);
+        }
+
+        .emergency-grid {
+            display: grid;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .emergency-card,
+        .emergency-form-panel {
+            padding: 20px;
+            background: rgba(13, 13, 14, 0.78);
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(16px);
+        }
+
+        .emergency-card h3,
+        .emergency-form-panel h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            font-weight: 900;
+        }
+
+        .emergency-card p,
+        .emergency-form-panel p {
+            color: var(--muted);
+        }
+
+        .emergency-services {
+            grid-template-columns: 1fr;
+            margin-top: 18px;
+        }
+
+        .emergency-service {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 13px;
+            min-height: 88px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+        }
+
+        .emergency-service i {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            color: #fff;
+            background: linear-gradient(135deg, var(--red), #571013);
+            border-radius: var(--radius);
+        }
+
+        .emergency-service strong {
+            display: block;
+            margin-bottom: 3px;
+            color: #fff;
+        }
+
+        .emergency-service span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .emergency-gallery {
+            grid-template-columns: 1fr;
+            margin-top: 16px;
+        }
+
+        .emergency-visual {
+            min-height: 220px;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            position: relative;
+        }
+
+        .emergency-visual img {
+            height: 100%;
+            min-height: 220px;
+        }
+
+        .emergency-visual span {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            padding: 10px;
+            color: #fff;
+            background: rgba(8, 8, 8, 0.76);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            font-weight: 900;
+        }
+
+        .emergency-cta {
+            display: grid;
+            gap: 14px;
+            margin-top: 18px;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(227, 25, 37, 0.2), rgba(255, 255, 255, 0.04));
+            border: 1px solid rgba(227, 25, 37, 0.34);
+            border-radius: var(--radius);
+        }
+
+        .emergency-cta strong {
+            display: block;
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            line-height: 0.95;
+            text-transform: uppercase;
+        }
+
+        .emergency-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .response-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .response-box {
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+        }
+
+        .response-box strong {
+            display: block;
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.7rem;
+            line-height: 1;
+        }
+
+        .response-box span {
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .customer-map-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .gallery-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .gallery-item {
+            position: relative;
+            min-height: 260px;
+        }
+
+        .gallery-item img {
+            height: 100%;
+            min-height: 260px;
+            transition: transform 0.7s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.06);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            inset: auto 12px 12px;
+            padding: 12px;
+            background: rgba(8, 8, 8, 0.74);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-caption strong {
+            display: block;
+            font-weight: 900;
+        }
+
+        .gallery-caption span {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .booking-panel form {
+            display: grid;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            width: 100%;
+            min-height: 52px;
+            padding: 14px;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .field textarea {
+            min-height: 118px;
+            resize: vertical;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: rgba(227, 25, 37, 0.74);
+            box-shadow: 0 0 0 4px rgba(227, 25, 37, 0.14);
+        }
+
+        .booking-side {
+            display: grid;
+            gap: 16px;
+        }
+
+        .queue-list,
+        .dashboard-list,
+        .contact-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .queue-item,
+        .dashboard-row,
+        .contact-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 13px;
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid var(--line);
+        }
+
+        .queue-item strong,
+        .dashboard-row strong,
+        .contact-row strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .queue-item small,
+        .dashboard-row small,
+        .contact-row small {
+            color: var(--muted);
+        }
+
+        .status-pill,
+        .rating-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 10px;
+            color: #fff;
+            background: rgba(227, 25, 37, 0.18);
+            border: 1px solid rgba(227, 25, 37, 0.32);
+            border-radius: 99px;
+            font-size: 0.82rem;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .rating-pill {
+            color: #ffe2a8;
+            background: rgba(245, 176, 65, 0.13);
+            border-color: rgba(245, 176, 65, 0.28);
+        }
+
+        .tracking-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .tracking-step {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 14px;
+            align-items: start;
+        }
+
+        .track-dot {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: var(--red);
+            border-radius: 50%;
+            box-shadow: 0 0 0 7px rgba(227, 25, 37, 0.14);
+            font-weight: 900;
+        }
+
+        .testimonial-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 14px;
+            color: var(--amber);
+        }
+
+        .stars svg {
+            fill: currentColor;
+        }
+
+        .testimonial-card strong {
+            margin-top: 16px;
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+            align-items: start;
+        }
+
+        .portal-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .admin-stats {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .dash-metric {
+            padding: 16px;
+            border-radius: var(--radius);
+            background: #101113;
+            border: 1px solid var(--line);
+        }
+
+        .dash-metric strong {
+            display: block;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .dash-metric span {
+            color: var(--muted);
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .bar-chart {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .bar-row {
+            display: grid;
+            grid-template-columns: 82px 1fr 44px;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+
+        .bar-track {
+            height: 10px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 99px;
+        }
+
+        .bar-track span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--red), var(--amber));
+            border-radius: inherit;
+        }
+
+        .invoice-total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--line-strong);
+        }
+
+        .invoice-total strong {
+            color: #fff;
+            font-family: "Rajdhani", sans-serif;
+            font-size: 1.9rem;
+            line-height: 1;
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 360px;
+            display: block;
+            border: 0;
+            filter: grayscale(0.18) contrast(1.05);
+        }
+
+        .footer {
+            padding: 30px 0 46px;
+            border-top: 1px solid var(--line);
+            background: #070707;
+        }
+
+        .footer-grid {
+            display: grid;
+            gap: 18px;
+            color: var(--muted);
+        }
+
+        .floating-wa {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 90;
+            width: 58px;
+            height: 58px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: #20b857;
+            border-radius: 50%;
+            box-shadow: 0 18px 44px rgba(32, 184, 87, 0.34);
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            z-index: 120;
+            width: min(420px, calc(100% - 32px));
+            padding: 14px 16px;
+            color: #fff;
+            background: #151515;
+            border: 1px solid rgba(39, 201, 139, 0.38);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transform: translate(-50%, 130%);
+            opacity: 0;
+            transition: transform 0.28s ease, opacity 0.28s ease;
+        }
+
+        .toast.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes load {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(145%);
+            }
+        }
+
+        @media (min-width: 680px) {
+            .hero-badges,
+            .stats-grid,
+            .pricing-grid,
+            .admin-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-grid,
+            .contact-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .field-full {
+                grid-column: 1 / -1;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .emergency-services,
+            .emergency-gallery,
+            .response-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 920px) {
+            .topline {
+                display: block;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .nav-menu {
+                position: static;
+                display: block;
+                padding: 0;
+                background: transparent;
+                border: 0;
+                box-shadow: none;
+            }
+
+            .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 18px;
+            }
+
+            .nav-links a {
+                padding: 0;
+            }
+
+            .about-grid,
+            .booking-grid,
+            .dashboard-grid,
+            .contact-grid {
+                grid-template-columns: 0.95fr 1.05fr;
+                align-items: center;
+            }
+
+            .tracking-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .portal-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .pricing-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .emergency-grid {
+                grid-template-columns: 1.03fr 0.97fr;
+            }
+
+            .emergency-gallery {
+                grid-template-columns: 1.1fr 0.9fr;
+            }
+
+            .emergency-visual:first-child {
+                grid-row: span 2;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: 230px;
+            }
+
+            .gallery-item {
+                min-height: auto;
+            }
+
+            .gallery-item img {
+                min-height: auto;
+                height: 100%;
+            }
+
+            .gallery-item.large {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+
+            .testimonial-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr auto;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                width: min(var(--max), calc(100% - 24px));
+            }
+
+            .brand-copy span {
+                max-width: 190px;
+            }
+
+            .hero-actions .btn,
+            .booking-panel .btn {
+                width: 100%;
+            }
+
+            .nav-actions .btn {
+                display: none;
+            }
+
+            .stats-grid,
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "AutoRepair",
+            "name": "Sheva Jaya Motor",
+            "description": "Bengkel mobil umum modern dan terpercaya di Kutoarjo, Purworejo.",
+            "telephone": "+6285799168325",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Jl. Tentara Pelajar, Katerban",
+                "addressLocality": "Kutoarjo",
+                "addressRegion": "Jawa Tengah",
+                "postalCode": "54214",
+                "addressCountry": "ID"
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.7",
+                "bestRating": "5"
+            },
+            "openingHoursSpecification": [
+                {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                    "opens": "08:00",
+                    "closes": "17:00"
+                }
+            ],
+            "priceRange": "Rp200.000 - Rp1.500.000"
+        }
+    </script>
+</head>
+<body class="loading">
+    <div class="loader" id="loader" aria-label="Memuat website">
+        <div class="loader-box">
+            <div class="loader-mark" aria-hidden="true"><i data-lucide="wrench"></i></div>
+            <strong>Sheva Jaya Motor</strong>
+            <div class="loader-bar"><span></span></div>
+        </div>
+    </div>
+
+    <header class="site-header">
+        <div class="topline">
+            <div class="container topline-inner">
+                <span><i data-lucide="map-pin"></i> Jl. Tentara Pelajar, Katerban, Kutoarjo, Purworejo</span>
+                <a href="tel:+6285799168325"><i data-lucide="phone"></i> 0857-9916-8325</a>
+            </div>
+        </div>
+
+        <div class="container nav">
+            <a class="brand" href="#beranda" aria-label="Sheva Jaya Motor">
+                <span class="brand-mark">SJM</span>
+                <span class="brand-copy">
+                    <strong>Sheva Jaya Motor</strong>
+                    <span>Bengkel mobil modern Kutoarjo</span>
+                </span>
+            </a>
+
+            <nav class="nav-menu" id="nav-menu" aria-label="Navigasi utama">
+                <ul class="nav-links">
+                    <li><a href="#beranda">Beranda</a></li>
+                    <li><a href="#tentang">Tentang</a></li>
+                    <li><a href="#layanan">Layanan</a></li>
+                    <li><a href="#darurat">Darurat</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#booking">Booking</a></li>
+                    <li><a href="#testimoni">Testimoni</a></li>
+                    <li><a href="#kontak">Kontak</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <a class="btn btn-primary" href="#booking"><i data-lucide="calendar-check"></i> Booking</a>
+                <button class="icon-btn menu-toggle" id="menu-toggle" type="button" aria-label="Buka menu" aria-expanded="false">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="beranda">
+        <section class="hero">
+            <div class="container hero-content reveal">
+                <span class="eyebrow"><i data-lucide="badge-check"></i> Rating 4.7 | Bengkel mobil umum modern di Kutoarjo</span>
+                <h1>Servis Mobil Cepat, Profesional & Terpercaya</h1>
+                <p>Melayani berbagai servis mobil dengan teknisi berpengalaman, alat modern, dan harga transparan.</p>
+
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#booking"><i data-lucide="calendar-plus"></i> Booking Service</a>
+                    <a class="btn btn-ghost" href="https://wa.me/6285799168325?text=Halo%20Sheva%20Jaya%20Motor%2C%20saya%20ingin%20konsultasi%20servis%20mobil." target="_blank" rel="noreferrer"><i data-lucide="message-circle"></i> Chat WhatsApp</a>
+                    <a class="btn btn-ghost" href="#layanan"><i data-lucide="list-checks"></i> Lihat Layanan</a>
+                </div>
+
+                <div class="hero-badges">
+                    <article class="hero-badge">
+                        <i data-lucide="timer"></i>
+                        <div>
+                            <strong>Servis cepat dan terjadwal</strong>
+                            <span>Booking online membantu antrean lebih rapi.</span>
+                        </div>
+                    </article>
+                    <article class="hero-badge">
+                        <i data-lucide="receipt-text"></i>
+                        <div>
+                            <strong>Harga transparan</strong>
+                            <span>Estimasi biaya dijelaskan sebelum pengerjaan.</span>
+                        </div>
+                    </article>
+                    <article class="hero-badge">
+                        <i data-lucide="scan-line"></i>
+                        <div>
+                            <strong>Alat modern</strong>
+                            <span>Scanning dan pengecekan menyeluruh untuk kendaraan harian.</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="tentang">
+            <div class="container about-grid">
+                <div class="about-media reveal">
+                    <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?auto=format&fit=crop&w=1300&q=85" alt="Mekanik profesional sedang memperbaiki mobil di workshop">
+                </div>
+
+                <div>
+                    <div class="section-head reveal">
+                        <span class="kicker">Tentang Bengkel</span>
+                        <h2 class="section-title">Workshop aktif dengan pengerjaan rapi dan pelayanan ramah.</h2>
+                        <p>Sheva Jaya Motor melayani kebutuhan servis mobil umum untuk pelanggan di Kutoarjo, Purworejo, dan sekitarnya dengan suasana bengkel yang profesional, praktis, dan terpercaya.</p>
+                    </div>
+
+                    <div class="about-list">
+                        <article class="about-item reveal">
+                            <span class="about-icon"><i data-lucide="user-check"></i></span>
+                            <div>
+                                <strong>Teknisi berpengalaman</strong>
+                                <p>Pengecekan dilakukan teliti oleh mekanik yang terbiasa menangani berbagai merek mobil.</p>
+                            </div>
+                        </article>
+                        <article class="about-item reveal">
+                            <span class="about-icon"><i data-lucide="gauge"></i></span>
+                            <div>
+                                <strong>Pengerjaan cepat</strong>
+                                <p>Alur servis dibuat efisien agar mobil bisa kembali digunakan dengan aman dan nyaman.</p>
+                            </div>
+                        </article>
+                        <article class="about-item reveal">
+                            <span class="about-icon"><i data-lucide="shield-check"></i></span>
+                            <div>
+                                <strong>Sparepart berkualitas</strong>
+                                <p>Rekomendasi part disesuaikan dengan kebutuhan kendaraan dan budget pelanggan.</p>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="stats-grid">
+                        <article class="stat-card reveal">
+                            <strong>1000+</strong>
+                            <span>mobil diservis</span>
+                        </article>
+                        <article class="stat-card reveal">
+                            <strong>500+</strong>
+                            <span>customer tetap</span>
+                        </article>
+                        <article class="stat-card reveal">
+                            <strong>10+</strong>
+                            <span>tahun pengalaman</span>
+                        </article>
+                        <article class="stat-card reveal">
+                            <strong>4.7</strong>
+                            <span>rating customer</span>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="layanan" class="section-alt">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Layanan</span>
+                    <h2 class="section-title">Servis lengkap untuk mobil harian, keluarga, dan operasional.</h2>
+                    <p>Pilih layanan sesuai kebutuhan kendaraan. Setiap pekerjaan bisa dikonsultasikan dulu sebelum diproses.</p>
+                </div>
+
+                <div class="services-grid">
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="settings"></i></span><span class="service-number">01</span></div>
+                        <h3>Tune Up</h3>
+                        <p>Optimasi performa mesin, pembakaran, dan respons kendaraan.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="droplets"></i></span><span class="service-number">02</span></div>
+                        <h3>Ganti Oli</h3>
+                        <p>Penggantian oli mesin dan filter sesuai rekomendasi kendaraan.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="cog"></i></span><span class="service-number">03</span></div>
+                        <h3>Servis Mesin</h3>
+                        <p>Pengecekan bunyi, tenaga mesin, kebocoran, dan gejala performa turun.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="wind"></i></span><span class="service-number">04</span></div>
+                        <h3>Servis AC</h3>
+                        <p>Perawatan AC, cek freon, blower, evaporator, dan kenyamanan kabin.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="wrench"></i></span><span class="service-number">05</span></div>
+                        <h3>Kaki Kaki</h3>
+                        <p>Perbaikan suspensi, bunyi jalan, stabilitas, dan kenyamanan berkendara.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="disc-3"></i></span><span class="service-number">06</span></div>
+                        <h3>Spooring & Balancing</h3>
+                        <p>Setir lebih stabil, ban lebih awet, dan handling lebih presisi.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="paintbrush"></i></span><span class="service-number">07</span></div>
+                        <h3>Body Repair</h3>
+                        <p>Perbaikan panel ringan, baret, penyok, dan finishing bodi.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="scan-line"></i></span><span class="service-number">08</span></div>
+                        <h3>Scanning Mobil</h3>
+                        <p>Diagnosa awal untuk indikator error, sensor, dan sistem kendaraan.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="zap"></i></span><span class="service-number">09</span></div>
+                        <h3>Kelistrikan Mobil</h3>
+                        <p>Pengecekan aki, lampu, kabel, starter, dan sistem elektrikal.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="circle-dot"></i></span><span class="service-number">10</span></div>
+                        <h3>Ganti Ban</h3>
+                        <p>Pemasangan, rotasi, pengecekan tekanan, dan rekomendasi ban.</p>
+                    </article>
+                    <article class="service-card reveal">
+                        <div class="service-top"><span class="service-icon"><i data-lucide="sparkles"></i></span><span class="service-number">11</span></div>
+                        <h3>Detailing Mobil</h3>
+                        <p>Pembersihan interior-eksterior agar mobil terlihat segar kembali.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="harga">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Estimasi Harga</span>
+                    <h2 class="section-title">Transparan sejak awal sebelum mobil dikerjakan.</h2>
+                    <p>Harga final dapat berubah menyesuaikan tipe mobil, kondisi kendaraan, dan sparepart yang dibutuhkan.</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <article class="pricing-card reveal">
+                        <h3>Ganti Oli</h3>
+                        <p>Oli mesin, filter, dan general check ringan.</p>
+                        <strong>Rp250rb</strong>
+                        <span>mulai dari</span>
+                    </article>
+                    <article class="pricing-card reveal">
+                        <h3>Tune Up</h3>
+                        <p>Pembersihan, pengecekan performa, dan setting dasar.</p>
+                        <strong>Rp500rb</strong>
+                        <span>mulai dari</span>
+                    </article>
+                    <article class="pricing-card reveal">
+                        <h3>Servis AC</h3>
+                        <p>Cek sistem pendingin, freon, dan komponen kabin.</p>
+                        <strong>Rp350rb</strong>
+                        <span>mulai dari</span>
+                    </article>
+                    <article class="pricing-card reveal">
+                        <h3>Spooring</h3>
+                        <p>Setelan kaki-kaki dan stabilitas kemudi.</p>
+                        <strong>Rp200rb</strong>
+                        <span>mulai dari</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="darurat" class="emergency-section">
+            <div class="container emergency-shell">
+                <div class="emergency-head reveal">
+                    <span class="kicker">Layanan Darurat 24 Jam</span>
+                    <h2 class="section-title">Towing, mekanik panggilan, dan bantuan mobil mogok.</h2>
+                    <p>Sheva Jaya Motor siap membantu kendaraan Anda kapan saja dengan layanan towing dan mekanik panggilan langsung ke lokasi customer.</p>
+                    <div class="emergency-badges">
+                        <span class="emergency-badge"><i data-lucide="zap"></i> Fast Response</span>
+                        <span class="emergency-badge"><i data-lucide="siren"></i> Emergency Service</span>
+                        <span class="emergency-badge"><i data-lucide="clock-3"></i> 24 Jam Siaga</span>
+                        <span class="emergency-badge"><i data-lucide="badge-check"></i> Mekanik Berpengalaman</span>
+                    </div>
+                </div>
+
+                <div class="emergency-grid">
+                    <div>
+                        <article class="emergency-card reveal">
+                            <h3>Bantuan darurat area Kutoarjo dan Purworejo</h3>
+                            <p>Hubungi tim Sheva Jaya Motor untuk towing, derek mobil, aki soak, overheat, starter bermasalah, ganti ban darurat, dan servis panggilan.</p>
+
+                            <div class="emergency-services">
+                                <div class="emergency-service"><i data-lucide="truck"></i><div><strong>Jasa towing mobil</strong><span>Pengangkutan kendaraan mogok atau rusak.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="map-pinned"></i><div><strong>Mekanik datang ke lokasi</strong><span>Roadside assistance langsung ke titik customer.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="battery-warning"></i><div><strong>Aki soak</strong><span>Cek aki, jumper, dan rekomendasi penggantian.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="circle-dot"></i><div><strong>Ganti ban darurat</strong><span>Bantuan saat ban bocor atau pecah di jalan.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="thermometer-sun"></i><div><strong>Overheat</strong><span>Pengecekan awal sistem pendingin kendaraan.</span></div></div>
+                                <div class="emergency-service"><i data-lucide="key-round"></i><div><strong>Starter bermasalah</strong><span>Bantuan diagnosa mobil sulit menyala.</span></div></div>
+                            </div>
+
+                            <div class="response-grid">
+                                <div class="response-box"><strong>15-30 menit</strong><span>Estimasi respon area dekat bengkel</span></div>
+                                <div class="response-box"><strong>Kutoarjo+</strong><span>Layanan sekitar Kutoarjo dan Purworejo</span></div>
+                            </div>
+
+                            <div class="emergency-cta">
+                                <div>
+                                    <strong>Butuh Bantuan Darurat?</strong>
+                                    <p>Hubungi Sheva Jaya Motor Sekarang</p>
+                                </div>
+                                <div class="emergency-actions">
+                                    <a class="btn btn-primary" href="https://wa.me/6285799168325?text=EMERGENCY%20Sheva%20Jaya%20Motor%2C%20saya%20butuh%20bantuan%20darurat%20mobil.%20Lokasi%3A" target="_blank" rel="noreferrer"><i data-lucide="message-circle"></i> WhatsApp Emergency</a>
+                                    <a class="btn btn-ghost" href="tel:+6285799168325"><i data-lucide="phone-call"></i> Call Now</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <div class="emergency-gallery">
+                            <article class="emergency-visual reveal">
+                                <img src="https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=1200&q=85" alt="Mobil towing modern untuk layanan darurat">
+                                <span>Mobil towing modern</span>
+                            </article>
+                            <article class="emergency-visual reveal">
+                                <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=85" alt="Mekanik roadside assistance bekerja profesional">
+                                <span>Mekanik roadside assistance</span>
+                            </article>
+                            <article class="emergency-visual reveal">
+                                <img src="https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?auto=format&fit=crop&w=900&q=85" alt="Kendaraan sedang ditangani untuk layanan derek">
+                                <span>Kendaraan sedang diderek</span>
+                            </article>
+                        </div>
+                    </div>
+
+                    <article class="emergency-form-panel reveal">
+                        <h3>Kirim lokasi customer ke WhatsApp</h3>
+                        <p>Isi detail darurat, lalu tombol ini akan membuka WhatsApp dengan format pesan lengkap untuk tim Sheva Jaya Motor.</p>
+
+                        <form id="emergency-form">
+                            <div class="form-grid">
+                                <div class="field">
+                                    <label for="emergency-name">Nama customer</label>
+                                    <input id="emergency-name" name="nama" type="text" placeholder="Nama lengkap" required>
+                                </div>
+                                <div class="field">
+                                    <label for="emergency-phone">Nomor HP</label>
+                                    <input id="emergency-phone" name="hp" type="tel" placeholder="08xxxxxxxxxx" required>
+                                </div>
+                                <div class="field">
+                                    <label for="emergency-car">Jenis mobil</label>
+                                    <input id="emergency-car" name="mobil" type="text" placeholder="Contoh: Avanza 2018" required>
+                                </div>
+                                <div class="field">
+                                    <label for="emergency-service">Jenis bantuan</label>
+                                    <select id="emergency-service" name="layanan" required>
+                                        <option value="">Pilih bantuan</option>
+                                        <option>Towing Mobil</option>
+                                        <option>Emergency Roadside Assistance</option>
+                                        <option>Mekanik Datang ke Lokasi</option>
+                                        <option>Servis Panggilan</option>
+                                        <option>Bantuan Mobil Mogok</option>
+                                        <option>Aki Soak</option>
+                                        <option>Ganti Ban Darurat</option>
+                                        <option>Starter Bermasalah</option>
+                                        <option>Overheat</option>
+                                        <option>Derek Mobil</option>
+                                    </select>
+                                </div>
+                                <div class="field field-full">
+                                    <label for="emergency-location">Maps lokasi customer</label>
+                                    <input id="emergency-location" name="lokasi" type="text" placeholder="Tempel link Google Maps atau klik Ambil Lokasi Saya" required>
+                                    <div class="customer-map-actions">
+                                        <button class="btn btn-ghost" id="get-location-btn" type="button"><i data-lucide="crosshair"></i> Ambil Lokasi Saya</button>
+                                        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Jl.%20Tentara%20Pelajar%20Katerban%20Kutoarjo%20Purworejo" target="_blank" rel="noreferrer"><i data-lucide="map"></i> Cek Area Maps</a>
+                                    </div>
+                                </div>
+                                <div class="field field-full">
+                                    <label for="emergency-note">Kondisi kendaraan</label>
+                                    <textarea id="emergency-note" name="catatan" placeholder="Contoh: mobil mogok di pinggir jalan, aki soak, mesin overheat, atau butuh derek ke bengkel."></textarea>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" type="submit"><i data-lucide="siren"></i> Kirim Emergency WhatsApp</button>
+                        </form>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="tracking" class="section-alt">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Tracking Service</span>
+                    <h2 class="section-title">Progress servis jelas dari mobil masuk sampai selesai.</h2>
+                    <p>Alur tracking membantu pelanggan memahami posisi kendaraan tanpa perlu menebak-nebak.</p>
+                </div>
+
+                <div class="tracking-grid">
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">1</span>
+                        <div>
+                            <h3>Mobil Diterima</h3>
+                            <p>Data kendaraan dan keluhan dicatat.</p>
+                        </div>
+                    </article>
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">2</span>
+                        <div>
+                            <h3>Pengecekan</h3>
+                            <p>Teknisi melakukan diagnosa awal.</p>
+                        </div>
+                    </article>
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">3</span>
+                        <div>
+                            <h3>Proses Servis</h3>
+                            <p>Pengerjaan sesuai persetujuan pelanggan.</p>
+                        </div>
+                    </article>
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">4</span>
+                        <div>
+                            <h3>Quality Control</h3>
+                            <p>Hasil diperiksa sebelum serah terima.</p>
+                        </div>
+                    </article>
+                    <article class="tracking-step reveal">
+                        <span class="track-dot">5</span>
+                        <div>
+                            <h3>Selesai</h3>
+                            <p>Mobil siap diambil pelanggan.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Gallery Workshop</span>
+                    <h2 class="section-title">Suasana bengkel aktif, mekanik bekerja, dan mobil customer.</h2>
+                    <p>Foto visual dibuat untuk membangun atmosfer bengkel modern, profesional, dan ramai customer.</p>
+                </div>
+
+                <div class="gallery-grid">
+                    <article class="gallery-item large reveal">
+                        <img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1500&q=85" alt="Workshop bengkel mobil modern">
+                        <div class="gallery-caption"><strong>Foto bengkel</strong><span>Area servis modern dan bersih.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=900&q=85" alt="Mekanik bekerja dengan alat bengkel">
+                        <div class="gallery-caption"><strong>Mekanik bekerja</strong><span>Pengecekan detail oleh teknisi.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1504222490345-c075b6008014?auto=format&fit=crop&w=900&q=85" alt="Alat bengkel modern">
+                        <div class="gallery-caption"><strong>Alat modern</strong><span>Peralatan kerja tertata.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=85" alt="Mobil customer setelah servis">
+                        <div class="gallery-caption"><strong>Mobil customer</strong><span>Kendaraan siap digunakan.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=85" alt="Before after detailing mobil">
+                        <div class="gallery-caption"><strong>Before after</strong><span>Finishing lebih rapi.</span></div>
+                    </article>
+                    <article class="gallery-item reveal">
+                        <img src="https://images.unsplash.com/photo-1517524206127-48bbd363f3d7?auto=format&fit=crop&w=900&q=85" alt="Proses servis mesin mobil">
+                        <div class="gallery-caption"><strong>Proses servis</strong><span>Pengecekan mesin dan komponen.</span></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="booking" class="section-alt">
+            <div class="container booking-grid">
+                <article class="booking-panel reveal">
+                    <span class="kicker">Booking Online</span>
+                    <h2 class="section-title">Atur jadwal servis tanpa antre panjang.</h2>
+                    <p>Isi form booking, data akan masuk ke dashboard booking lokal dan pesan WhatsApp siap dikirim ke Sheva Jaya Motor.</p>
+
+                    <form id="booking-form">
+                        <div class="form-grid">
+                            <div class="field">
+                                <label for="nama">Nama customer</label>
+                                <input id="nama" name="nama" type="text" placeholder="Nama lengkap" required>
+                            </div>
+                            <div class="field">
+                                <label for="hp">Nomor HP</label>
+                                <input id="hp" name="hp" type="tel" placeholder="08xxxxxxxxxx" required>
+                            </div>
+                            <div class="field">
+                                <label for="mobil">Jenis mobil</label>
+                                <input id="mobil" name="mobil" type="text" placeholder="Toyota Avanza 2020" required>
+                            </div>
+                            <div class="field">
+                                <label for="layanan-select">Layanan</label>
+                                <select id="layanan-select" name="layanan" required>
+                                    <option value="">Pilih layanan</option>
+                                    <option>Tune Up</option>
+                                    <option>Ganti Oli</option>
+                                    <option>Servis Mesin</option>
+                                    <option>Servis AC</option>
+                                    <option>Kaki Kaki</option>
+                                    <option>Spooring & Balancing</option>
+                                    <option>Body Repair</option>
+                                    <option>Scanning Mobil</option>
+                                    <option>Kelistrikan Mobil</option>
+                                    <option>Ganti Ban</option>
+                                    <option>Detailing Mobil</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="tanggal">Tanggal booking</label>
+                                <input id="tanggal" name="tanggal" type="date" required>
+                            </div>
+                            <div class="field">
+                                <label for="jam">Jam booking</label>
+                                <select id="jam" name="jam" required>
+                                    <option value="">Pilih jam</option>
+                                    <option>08:00</option>
+                                    <option>09:00</option>
+                                    <option>10:00</option>
+                                    <option>11:00</option>
+                                    <option>13:00</option>
+                                    <option>14:00</option>
+                                    <option>15:00</option>
+                                    <option>16:00</option>
+                                </select>
+                            </div>
+                            <div class="field field-full">
+                                <label for="catatan">Catatan kerusakan</label>
+                                <textarea id="catatan" name="catatan" placeholder="Contoh: mesin brebet, AC kurang dingin, kaki-kaki bunyi, atau lampu indikator menyala."></textarea>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit"><i data-lucide="calendar-check"></i> Booking Sekarang</button>
+                    </form>
+                </article>
+
+                <div class="booking-side">
+                    <article class="booking-panel reveal">
+                        <h3>Live Booking System</h3>
+                        <p>Simulasi booking aktif yang langsung berubah saat form dikirim dari halaman ini.</p>
+                        <div class="queue-list" id="live-booking-list"></div>
+                    </article>
+                    <article class="booking-panel reveal">
+                        <h3>Jam Operasional</h3>
+                        <p>Senin - Sabtu, 08:00 - 17:00. Minggu dapat konsultasi via WhatsApp terlebih dahulu.</p>
+                        <div class="queue-list">
+                            <div class="queue-item">
+                                <div><strong>Estimasi konfirmasi</strong><small>Melalui WhatsApp</small></div>
+                                <span class="status-pill">5-15 menit</span>
+                            </div>
+                            <div class="queue-item">
+                                <div><strong>Area layanan</strong><small>Kutoarjo, Purworejo, dan sekitar</small></div>
+                                <span class="status-pill">Aktif</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard">
+            <div class="container dashboard-grid">
+                <div class="section-head reveal">
+                    <span class="kicker">Dashboard Admin</span>
+                    <h2 class="section-title">Ringkasan operasional bengkel dalam tampilan modern.</h2>
+                    <p>Dashboard ini membaca data booking yang masuk dari form di halaman, cocok sebagai contoh sistem admin bengkel.</p>
+                </div>
+
+                <article class="dashboard-card reveal">
+                    <h3>Booking hari ini</h3>
+                    <div class="admin-stats">
+                        <div class="dash-metric"><strong id="dash-total">0</strong><span>Total booking</span></div>
+                        <div class="dash-metric"><strong id="dash-pending">0</strong><span>Menunggu konfirmasi</span></div>
+                        <div class="dash-metric"><strong id="dash-rating">4.7</strong><span>Rating customer</span></div>
+                        <div class="dash-metric"><strong id="dash-finished">0</strong><span>Estimasi selesai</span></div>
+                    </div>
+
+                    <div class="bar-chart" aria-label="Grafik layanan populer">
+                        <div class="bar-row"><span>Ganti Oli</span><div class="bar-track"><span style="width: 86%"></span></div><span>86%</span></div>
+                        <div class="bar-row"><span>Tune Up</span><div class="bar-track"><span style="width: 72%"></span></div><span>72%</span></div>
+                        <div class="bar-row"><span>Servis AC</span><div class="bar-track"><span style="width: 64%"></span></div><span>64%</span></div>
+                        <div class="bar-row"><span>Kaki Kaki</span><div class="bar-track"><span style="width: 58%"></span></div><span>58%</span></div>
+                    </div>
+
+                    <div class="dashboard-list" id="dashboard-list"></div>
+                </article>
+            </div>
+        </section>
+
+        <section id="portal" class="section-alt">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Portal Customer</span>
+                    <h2 class="section-title">Riwayat servis dan invoice digital dalam satu sistem.</h2>
+                    <p>Konsep UI ini menampilkan bagaimana pelanggan bisa melihat kendaraan, histori pengerjaan, approval biaya, dan invoice setelah servis selesai.</p>
+                </div>
+
+                <div class="portal-grid">
+                    <article class="dashboard-card reveal">
+                        <h3>Akun customer</h3>
+                        <p>Data kendaraan pelanggan tersimpan rapi untuk booking ulang dan reminder servis berikutnya.</p>
+                        <div class="dashboard-list">
+                            <div class="dashboard-row">
+                                <div><strong>Toyota Avanza 2020</strong><small>Terakhir servis: ganti oli dan tune up</small></div>
+                                <span class="status-pill">Aktif</span>
+                            </div>
+                            <div class="dashboard-row">
+                                <div><strong>Honda Brio 2019</strong><small>Reminder: cek AC dan filter kabin</small></div>
+                                <span class="status-pill">Reminder</span>
+                            </div>
+                            <div class="dashboard-row">
+                                <div><strong>Approval sparepart</strong><small>Filter oli dan kampas rem depan</small></div>
+                                <span class="status-pill">Menunggu</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="dashboard-card reveal">
+                        <h3>Invoice digital</h3>
+                        <p>Rincian biaya servis dibuat jelas agar pelanggan tahu komponen, jasa, dan total pembayaran.</p>
+                        <div class="dashboard-list">
+                            <div class="dashboard-row">
+                                <div><strong>Oli mesin premium</strong><small>4 liter</small></div>
+                                <span>Rp420rb</span>
+                            </div>
+                            <div class="dashboard-row">
+                                <div><strong>Filter oli</strong><small>Sparepart berkualitas</small></div>
+                                <span>Rp85rb</span>
+                            </div>
+                            <div class="dashboard-row">
+                                <div><strong>Jasa tune up</strong><small>Pembersihan dan pengecekan</small></div>
+                                <span>Rp250rb</span>
+                            </div>
+                        </div>
+                        <div class="invoice-total">
+                            <span>Total estimasi</span>
+                            <strong>Rp755rb</strong>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimoni">
+            <div class="container">
+                <div class="section-head reveal">
+                    <span class="kicker">Testimoni</span>
+                    <h2 class="section-title">Customer puas dengan servis cepat dan penjelasan yang jelas.</h2>
+                    <p>Testimoni berikut bisa diganti dengan review asli pelanggan saat sudah tersedia.</p>
+                </div>
+
+                <div class="testimonial-grid">
+                    <article class="testimonial-card reveal">
+                        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+                        <p>"Mobil saya dicek dengan teliti, estimasi biaya jelas, dan pengerjaan selesai sesuai janji."</p>
+                        <strong>Pak Agus</strong>
+                        <span class="rating-pill">Rating 5.0</span>
+                    </article>
+                    <article class="testimonial-card reveal">
+                        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+                        <p>"AC mobil kembali dingin. Mekaniknya ramah dan mau menjelaskan kerusakan dengan detail."</p>
+                        <strong>Bu Rina</strong>
+                        <span class="rating-pill">Rating 4.8</span>
+                    </article>
+                    <article class="testimonial-card reveal">
+                        <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+                        <p>"Booking lewat WhatsApp praktis, datang langsung ditangani. Cocok buat mobil harian."</p>
+                        <strong>Mas Dimas</strong>
+                        <span class="rating-pill">Rating 4.7</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="kontak">
+            <div class="container contact-grid">
+                <article class="contact-panel reveal">
+                    <span class="kicker">Kontak</span>
+                    <h2 class="section-title">Datang ke Sheva Jaya Motor atau booking via WhatsApp.</h2>
+                    <p>Bengkel mobil umum modern dan terpercaya di Kutoarjo, siap membantu servis kendaraan Anda.</p>
+
+                    <div class="contact-list">
+                        <div class="contact-row">
+                            <div><strong>WhatsApp / Telepon</strong><small>0857-9916-8325</small></div>
+                            <a class="status-pill" href="tel:+6285799168325">Panggil</a>
+                        </div>
+                        <div class="contact-row">
+                            <div><strong>Alamat lengkap</strong><small>Jl. Tentara Pelajar, Katerban, Kec. Kutoarjo, Kabupaten Purworejo, Jawa Tengah 54214, Indonesia</small></div>
+                            <i data-lucide="map-pin"></i>
+                        </div>
+                        <div class="contact-row">
+                            <div><strong>Jam operasional</strong><small>Senin - Sabtu, 08:00 - 17:00</small></div>
+                            <i data-lucide="clock"></i>
+                        </div>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="https://wa.me/6285799168325?text=Halo%20Sheva%20Jaya%20Motor%2C%20saya%20ingin%20booking%20servis%20mobil." target="_blank" rel="noreferrer"><i data-lucide="message-circle"></i> Chat WhatsApp</a>
+                        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Sheva%20Jaya%20Motor%20Jl.%20Tentara%20Pelajar%20Katerban%20Kutoarjo%20Purworejo" target="_blank" rel="noreferrer"><i data-lucide="navigation"></i> Arah Lokasi</a>
+                    </div>
+                </article>7777777777777777777777777777777777777777777777777777777777777
+
+                <div class="contact-map reveal">
+                    <iframe
+                        title="Google Maps Sheva Jaya Motor"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps?q=Sheva%20Jaya%20Motor%20Jl.%20Tentara%20Pelajar%20Katerban%20Kutoarjo%20Purworejo%20Jawa%20Tengah%2054214&output=embed">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="brand">
+                <span class="brand-mark">SJM</span>
+                <span class="brand-copy">
+                    <strong>Sheva Jaya Motor</strong>
+                    <span>Bengkel mobil modern dan terpercaya di Kutoarjo.</span>
+                </span>
+            </div>
+            <p>&copy; <span id="year"></span> Sheva Jaya Motor. Servis mobil cepat, profesional, dan transparan.</p>
+        </div>
+    </footer>
+
+    <a class="floating-wa" href="https://wa.me/6285799168325?text=Halo%20Sheva%20Jaya%20Motor%2C%20saya%20ingin%20konsultasi%20servis%20mobil." target="_blank" rel="noreferrer" aria-label="Chat WhatsApp">
+        <i data-lucide="message-circle"></i>
+    </a>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">Booking tersimpan. WhatsApp akan dibuka untuk konfirmasi.</div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+        const SHEVA_WHATSAPP = "6285799168325";
+        const STORAGE_KEY = "sheva-jaya-bookings";
+        const bookingForm = document.getElementById("booking-form");
+        const emergencyForm = document.getElementById("emergency-form");
+        const emergencyLocationInput = document.getElementById("emergency-location");
+        const getLocationBtn = document.getElementById("get-location-btn");
+        const dateInput = document.getElementById("tanggal");
+        const menuToggle = document.getElementById("menu-toggle");
+        const navMenu = document.getElementById("nav-menu");
+        const liveBookingList = document.getElementById("live-booking-list");
+        const dashboardList = document.getElementById("dashboard-list");
+        const dashTotal = document.getElementById("dash-total");
+        const dashPending = document.getElementById("dash-pending");
+        const dashFinished = document.getElementById("dash-finished");
+        const toast = document.getElementById("toast");
+
+        const starterBookings = [
+            {
+                nama: "Budi Santoso",
+                hp: "085700000001",
+                mobil: "Toyota Avanza",
+                layanan: "Ganti Oli",
+                tanggal: "Hari ini",
+                jam: "09:00",
+                catatan: "General check",
+                status: "Pengecekan"
+            },
+            {
+                nama: "Rina Wulandari",
+                hp: "085700000002",
+                mobil: "Honda Brio",
+                layanan: "Servis AC",
+                tanggal: "Hari ini",
+                jam: "10:00",
+                catatan: "AC kurang dingin",
+                status: "Proses Servis"
+            },
+            {
+                nama: "Dimas Prasetyo",
+                hp: "085700000003",
+                mobil: "Daihatsu Xenia",
+                layanan: "Kaki Kaki",
+                tanggal: "Hari ini",
+                jam: "13:00",
+                catatan: "Bunyi saat jalan rusak",
+                status: "Menunggu"
+            }
+        ];
+
+        function initIcons() {
+            if (window.lucide) {
+                window.lucide.createIcons({
+                    attrs: {
+                        "stroke-width": 2.2
+                    }
+                });
+            }
+        }
+
+        function getBookings() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(starterBookings));
+                return starterBookings;
+            }
+
+            try {
+                return JSON.parse(stored);
+            } catch (error) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(starterBookings));
+                return starterBookings;
+            }
+        }
+
+        function saveBookings(bookings) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
+        }
+
+        function bookingTemplate(booking, index) {
+            return `
+                <div class="queue-item">
+                    <div>
+                        <strong>${booking.layanan}</strong>
+                        <small>${booking.nama} | ${booking.mobil} | ${booking.jam}</small>
+                    </div>
+                    <span class="status-pill">${booking.status || (index === 0 ? "Baru" : "Aktif")}</span>
+                </div>
+            `;
+        }
+
+        function dashboardTemplate(booking) {
+            return `
+                <div class="dashboard-row">
+                    <div>
+                        <strong>${booking.nama}</strong>
+                        <small>${booking.layanan} | ${booking.mobil} | ${booking.tanggal} ${booking.jam}</small>
+                    </div>
+                    <span class="status-pill">${booking.status || "Baru"}</span>
+                </div>
+            `;
+        }
+
+        function renderBookings() {
+            const bookings = getBookings();
+            const latest = bookings.slice(-5).reverse();
+            const pending = bookings.filter(function (booking) {
+                return booking.status !== "Selesai";
+            });
+
+            liveBookingList.innerHTML = latest.map(bookingTemplate).join("");
+            dashboardList.innerHTML = latest.map(dashboardTemplate).join("");
+            dashTotal.textContent = bookings.length;
+            dashPending.textContent = pending.length;
+            dashFinished.textContent = Math.max(bookings.length - pending.length, 0);
+        }
+
+        function showToast() {
+            toast.classList.add("show");
+            window.setTimeout(function () {
+                toast.classList.remove("show");
+            }, 3200);
+        }
+
+        function openWhatsApp(message) {
+            window.open("https://wa.me/" + SHEVA_WHATSAPP + "?text=" + encodeURIComponent(message), "_blank", "noopener");
+        }
+
+        if (dateInput) {
+            const today = new Date();
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const day = String(today.getDate()).padStart(2, "0");
+            dateInput.min = today.getFullYear() + "-" + month + "-" + day;
+        }
+
+        if (menuToggle && navMenu) {
+            menuToggle.addEventListener("click", function () {
+                const isOpen = navMenu.classList.toggle("is-open");
+                menuToggle.setAttribute("aria-expanded", String(isOpen));
+                menuToggle.innerHTML = isOpen ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+                initIcons();
+            });
+
+            navMenu.addEventListener("click", function (event) {
+                if (event.target.closest("a")) {
+                    navMenu.classList.remove("is-open");
+                    menuToggle.setAttribute("aria-expanded", "false");
+                    menuToggle.innerHTML = '<i data-lucide="menu"></i>';
+                    initIcons();
+                }
+            });
+        }
+
+        if (bookingForm) {
+            bookingForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(bookingForm);
+                const booking = {
+                    nama: formData.get("nama"),
+                    hp: formData.get("hp"),
+                    mobil: formData.get("mobil"),
+                    layanan: formData.get("layanan"),
+                    tanggal: formData.get("tanggal"),
+                    jam: formData.get("jam"),
+                    catatan: formData.get("catatan") || "-",
+                    status: "Menunggu"
+                };
+
+                const bookings = getBookings();
+                bookings.push(booking);
+                saveBookings(bookings);
+                renderBookings();
+                showToast();
+
+                const message = [
+                    "Halo Sheva Jaya Motor, saya ingin booking servis mobil.",
+                    "",
+                    "Nama: " + booking.nama,
+                    "Nomor HP: " + booking.hp,
+                    "Jenis Mobil: " + booking.mobil,
+                    "Layanan: " + booking.layanan,
+                    "Tanggal Booking: " + booking.tanggal,
+                    "Jam Booking: " + booking.jam,
+                    "Catatan Kerusakan: " + booking.catatan
+                ].join("\n");
+
+                openWhatsApp(message);
+                bookingForm.reset();
+                if (dateInput) {
+                    const today = new Date();
+                    const month = String(today.getMonth() + 1).padStart(2, "0");
+                    const day = String(today.getDate()).padStart(2, "0");
+                    dateInput.min = today.getFullYear() + "-" + month + "-" + day;
+                }
+            });
+        }
+
+        if (getLocationBtn && emergencyLocationInput) {
+            getLocationBtn.addEventListener("click", function () {
+                if (!navigator.geolocation) {
+                    emergencyLocationInput.value = "Browser tidak mendukung geolocation. Silakan tempel link Google Maps manual.";
+                    return;
+                }
+
+                getLocationBtn.textContent = "Mengambil lokasi...";
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        const latitude = position.coords.latitude.toFixed(6);
+                        const longitude = position.coords.longitude.toFixed(6);
+                        emergencyLocationInput.value = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+                        getLocationBtn.innerHTML = '<i data-lucide="check"></i> Lokasi Terambil';
+                        initIcons();
+                    },
+                    function () {
+                        emergencyLocationInput.value = "Gagal mengambil lokasi. Silakan tempel link Google Maps manual.";
+                        getLocationBtn.innerHTML = '<i data-lucide="crosshair"></i> Ambil Lokasi Saya';
+                        initIcons();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 12000,
+                        maximumAge: 0
+                    }
+                );
+            });
+        }
+
+        if (emergencyForm) {
+            emergencyForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(emergencyForm);
+                const emergencyBooking = {
+                    nama: formData.get("nama"),
+                    hp: formData.get("hp"),
+                    mobil: formData.get("mobil"),
+                    layanan: "DARURAT - " + formData.get("layanan"),
+                    tanggal: "Emergency",
+                    jam: "Sekarang",
+                    catatan: (formData.get("catatan") || "-") + " | Lokasi: " + formData.get("lokasi"),
+                    status: "Emergency"
+                };
+
+                const bookings = getBookings();
+                bookings.push(emergencyBooking);
+                saveBookings(bookings);
+                renderBookings();
+                showToast();
+
+                const message = [
+                    "EMERGENCY Sheva Jaya Motor, saya butuh bantuan darurat mobil.",
+                    "",
+                    "Nama: " + formData.get("nama"),
+                    "Nomor HP: " + formData.get("hp"),
+                    "Jenis Mobil: " + formData.get("mobil"),
+                    "Jenis Bantuan: " + formData.get("layanan"),
+                    "Lokasi Customer: " + formData.get("lokasi"),
+                    "Kondisi Kendaraan: " + (formData.get("catatan") || "-"),
+                    "",
+                    "Mohon estimasi waktu kedatangan mekanik/towing."
+                ].join("\n");
+
+                openWhatsApp(message);
+                emergencyForm.reset();
+                if (getLocationBtn) {
+                    getLocationBtn.innerHTML = '<i data-lucide="crosshair"></i> Ambil Lokasi Saya';
+                    initIcons();
+                }
+            });
+        }
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        const revealItems = document.querySelectorAll(".reveal");
+        const observer = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.14 }
+        );
+
+        revealItems.forEach(function (item) {
+            observer.observe(item);
+        });
+
+        function finishLoading() {
+            document.body.classList.remove("loading");
+            document.getElementById("loader").classList.add("is-hidden");
+            initIcons();
+            renderBookings();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            window.setTimeout(finishLoading, 450);
+        });
+
+        window.addEventListener("load", finishLoading);
+
+        initIcons();
+        renderBookings();
+    </script>
+</body>
+</html>
